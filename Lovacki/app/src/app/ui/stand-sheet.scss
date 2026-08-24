@@ -1,0 +1,172 @@
+:host {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  align-items: end;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 45%);
+}
+
+.sheet {
+  position: relative;
+  background: var(--forest);
+  color: var(--cream);
+  border-radius: 20px 20px 0 0;
+  padding: 20px 20px calc(24px + env(safe-area-inset-bottom));
+  max-height: 88dvh;
+  overflow: auto;
+  display: grid;
+  gap: 8px;
+}
+
+h2,
+h3 {
+  margin: 0;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+h3 {
+  margin-top: 8px;
+}
+
+.status {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.status.free {
+  color: var(--available);
+}
+
+.status.taken {
+  color: var(--taken);
+}
+
+.status.feeding {
+  color: var(--feeding);
+}
+
+.status.feeding-small {
+  color: var(--feeding-small);
+}
+
+.muted {
+  color: color-mix(in srgb, var(--cream) 70%, transparent);
+  font-size: 13px;
+  margin: 0;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.outline,
+.danger {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--cream) 40%, transparent);
+  color: var(--cream);
+}
+
+.available,
+.primary {
+  border: 0;
+  color: var(--cream);
+}
+
+.available {
+  background: var(--available);
+}
+
+.primary {
+  background: var(--moss);
+}
+
+.gold {
+  border: 0;
+  background: var(--feeding);
+  color: var(--forest-dark);
+}
+
+.danger {
+  color: var(--taken);
+  border-color: var(--taken);
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+
+.count {
+  font-weight: 600;
+  margin: 8px 0 0;
+}
+
+.delete {
+  background: none;
+  border: 0;
+  color: var(--taken);
+  padding: 4px 0;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  background: var(--forest-dark);
+  color: var(--cream);
+  border: 0;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.chip.selected {
+  background: var(--moss);
+}
+
+label {
+  display: grid;
+  gap: 4px;
+  font-size: 13px;
+}
+
+input {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--cream) 40%, transparent);
+  border-radius: 10px;
+  color: var(--cream);
+  padding: 12px;
+  font: inherit;
+  font-size: 16px;
+}
+
+@media (min-width: 768px) {
+  :host {
+    place-items: center;
+    align-items: center;
+    padding: 24px;
+  }
+
+  .sheet {
+    width: min(480px, 100%);
+    border-radius: 16px;
+    max-height: min(85dvh, 760px);
+    padding: 24px;
+  }
+}

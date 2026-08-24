@@ -1,0 +1,134 @@
+<section class="map-page">
+  <header>
+    <div>
+      <h1>{{ catalog()?.club?.name }}</h1>
+      <p>{{ placeType() ? s().tapToPlace : s().pinchZoom }}</p>
+    </div>
+    <app-language-button [language]="state().language" (changed)="club.setLanguage($event)" />
+  </header>
+  <div class="tools">
+    <button class="available" type="button" [disabled]="exporting()" (click)="downloadMap()">
+      {{ exporting() ? s().downloadingMap : s().downloadMap }}
+    </button>
+    <button class="ghost" type="button" (click)="install.addShortcut()">{{ s().addShortcut }}</button>
+  </div>
+  @if (exportError()) {
+    <p class="tools-error">{{ exportError() }}</p>
+  }
+  @if (club.isAdmin()) {
+    <div class="admin">
+      @if (!placeType()) {
+        <button class="available" type="button" (click)="placeType.set('hunting')">{{ s().addHunting }}</button>
+        <button class="gold" type="button" (click)="placeType.set('feeding-large')">{{ s().addFeedingLarge }}</button>
+        <button class="small-feed" type="button" (click)="placeType.set('feeding-small')">{{ s().addFeedingSmall }}</button>
+      } @else {
+        <button class="ghost" type="button" (click)="placeType.set(null)">{{ s().cancelPlace }}</button>
+      }
+    </div>
+  }
+  <div
+    #viewport
+    class="viewport"
+    (pointerdown)="onPointerDown($event)"
+    (pointermove)="onPointerMove($event)"
+    (pointerup)="onPointerUp($event)"
+    (pointercancel)="onPointerUp($event)"
+    (wheel)="onWheel($event)"
+    (contextmenu)="$event.preventDefault()"
+  >
+    <div #stage class="stage" [style.width.px]="fitted().baseW" [style.height.px]="fitted().baseH">
+      <img
+        class="ground"
+        src="map_loviste.jpg"
+        alt=""
+        draggable="false"
+        decoding="async"
+        [attr.width]="catalog()?.map?.width"
+        [attr.height]="catalog()?.map?.height"
+      />
+      <div class="pins">
+        @for (pin of pinViews(); track pin.stand.id) {
+          <div
+            class="pin"
+            [class.feeding-large]="pin.kind === 'large'"
+            [class.feeding-small]="pin.kind === 'small'"
+            [class.taken]="pin.taken"
+            [class.highlight]="pin.stand.id === highlightedId()"
+            [style.left.%]="pin.stand.x * 100"
+            [style.top.%]="pin.stand.y * 100"
+          >
+            <i class="tip"></i>
+            <span class="mark">
+              @if (pin.kind === 'small') {
+                <svg viewBox="0 0 36 22" aria-hidden="true">
+                  <path fill="currentColor" d="M2 4h18l8 14H2z" />
+                  <circle cx="30" cy="8" r="5" fill="#7cb342" />
+                </svg>
+              } @else if (pin.kind === 'large') {
+                <svg viewBox="0 0 32 32" aria-hidden="true">
+                  <circle cx="16" cy="16" r="15" fill="currentColor" />
+                  <circle cx="16" cy="16" r="15" fill="none" stroke="#fff" stroke-width="2" />
+                </svg>
+              } @else {
+                <svg viewBox="0 0 32 40" aria-hidden="true">
+                  <path fill="currentColor" d="M16 1 29 13H3Z" />
+                  <path fill="currentColor" d="M7 13h18v9H7z" />
+                  <path fill="currentColor" d="M5 22h22v2.4H5z" />
+                  <path fill="currentColor" d="M9 24h2.4L8 38H5.4z" />
+                  <path fill="currentColor" d="M20.6 24H23L26.6 38h-2.6z" />
+                  <path fill="currentColor" d="M14.8 24h2.4v14h-2.4z" />
+                </svg>
+              }
+              <span>{{ pin.stand.code }}</span>
+            </span>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="legend">
+      <button class="legend-toggle" type="button" (click)="legendOpen.set(!legendOpen())">
+        <span>{{ s().legend }}</span>
+        @if (!legendOpen()) {
+          <i class="dot free" [class.off]="!showFree()"></i>
+          <i class="dot taken" [class.off]="!showTaken()"></i>
+          <i class="dot feed-large" [class.off]="!showFeedLarge()"></i>
+          <i class="dot feed-small" [class.off]="!showFeedSmall()"></i>
+        }
+      </button>
+      @if (legendOpen()) {
+        <p>{{ s().legendTapHint }}</p>
+        <button type="button" class="legend-row" [class.off]="!showFree()" (click)="showFree.set(!showFree())">
+          <span>{{ s().legendFree }} · {{ freeCount() }}</span>
+          @if (!showFree()) {
+            <small>{{ s().legendHidden }}</small>
+          }
+        </button>
+        <button type="button" class="legend-row" [class.off]="!showTaken()" (click)="showTaken.set(!showTaken())">
+          <span>{{ s().legendTaken }} · {{ taken() }}</span>
+          @if (!showTaken()) {
+            <small>{{ s().legendHidden }}</small>
+          }
+        </button>
+        <button type="button" class="legend-row" [class.off]="!showFeedLarge()" (click)="showFeedLarge.set(!showFeedLarge())">
+          <span>{{ s().legendFeedingLarge }} · {{ feedingLargeCount() }}</span>
+          @if (!showFeedLarge()) {
+            <small>{{ s().legendHidden }}</small>
+          }
+        </button>
+        <button type="button" class="legend-row" [class.off]="!showFeedSmall()" (click)="showFeedSmall.set(!showFeedSmall())">
+          <span>{{ s().legendFeedingSmall }} · {{ feedingSmallCount() }}</span>
+          @if (!showFeedSmall()) {
+            <small>{{ s().legendHidden }}</small>
+          }
+        </button>
+      }
+    </div>
+  </div>
+</section>
+
+@if (selected(); as stand) {
+  <app-stand-sheet [stand]="stand" (closed)="selected.set(null)" (showOnMap)="showStandOnMap(stand)" />
+}
+@if (pending() && placeType()) {
+  <app-add-stand-dialog [strings]="s()" (closed)="pending.set(null)" (saved)="saveStand($event)" />
+}

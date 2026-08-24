@@ -1,0 +1,96 @@
+.page {
+  padding: 16px;
+  color: var(--cream);
+  display: grid;
+  gap: 16px;
+}
+
+@media (min-width: 900px) {
+  .page {
+    padding: 24px 28px 40px;
+  }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+article {
+  background: var(--forest);
+  border-radius: 16px;
+  padding: 16px;
+}
+
+p,
+small {
+  color: color-mix(in srgb, var(--cream) 75%, transparent);
+  margin: 6px 0 0;
+}
+
+.label {
+  font-size: 13px;
+}
+
+.logout {
+  margin-top: 12px;
+  background: var(--taken);
+  color: var(--cream);
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.action {
+  margin-top: 12px;
+  background: var(--moss);
+  color: var(--cream);
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.member {
+  display: grid;
+  margin-top: 12px;
+}
+
+.chips {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.chips button {
+  background: var(--forest-dark);
+  color: var(--cream);
+  border: 0;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.chips button.active {
+  background: var(--moss);
+}
+
+.foot {
+  color: color-mix(in srgb, var(--cream) 45%, transparent);
+  font-size: 12px;
+}

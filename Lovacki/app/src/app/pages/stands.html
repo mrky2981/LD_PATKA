@@ -1,0 +1,46 @@
+<section class="page">
+  <h1>{{ s().stands }}</h1>
+  <p class="sub">{{ s().resetEveryDay }} · {{ state().nextResetLabel }}</p>
+  <button class="duck" type="button" (click)="duckOpen.set(true)">
+    <span>
+      <strong>{{ s().duckHunt }}</strong>
+      <small>{{ format(s().duckHuntCount, duckCount()) }}</small>
+    </span>
+    <span aria-hidden="true">›</span>
+  </button>
+  <label class="search">
+    <span class="sr-only">{{ s().searchStands }}</span>
+    <input [value]="query()" (input)="setQuery($event)" [placeholder]="s().searchHint" [attr.aria-label]="s().searchStands" />
+  </label>
+  <div class="filters">
+    @for (item of filters(); track item.id) {
+      <button type="button" [class.active]="filter() === item.id" (click)="filter.set(item.id)">
+        {{ item.label }}
+      </button>
+    }
+  </div>
+  @if (stands().length === 0) {
+    <p class="empty">{{ s().noSearchResults }}</p>
+  }
+  <ul>
+    @for (stand of stands(); track stand.id) {
+      <li>
+        <button type="button" class="row" (click)="selected.set(stand)">
+          <i [style.background]="color(stand)"></i>
+          <span class="meta">
+            <strong>{{ standDisplayName(s(), stand.code, stand.type, stand.feedingKind) }}</strong>
+            <small>{{ subtitle(stand) }}</small>
+          </span>
+          <b>{{ stand.code }}</b>
+        </button>
+      </li>
+    }
+  </ul>
+</section>
+
+@if (selected(); as stand) {
+  <app-stand-sheet [stand]="stand" (closed)="selected.set(null)" (showOnMap)="showOnMap(stand)" />
+}
+@if (duckOpen()) {
+  <app-duck-hunt-sheet (closed)="duckOpen.set(false)" />
+}

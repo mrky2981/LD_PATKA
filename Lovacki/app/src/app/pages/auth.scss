@@ -1,0 +1,136 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.auth {
+  height: 100%;
+  overflow: auto;
+  background: var(--forest-dark);
+  padding: 20px;
+  padding-bottom: calc(20px + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
+}
+
+.panel {
+  width: min(440px, 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+.top {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.brand {
+  text-align: center;
+  margin: 12px 0 24px;
+}
+
+h1 {
+  margin: 0;
+  color: var(--cream);
+  font-size: 28px;
+}
+
+.brand p,
+.hint,
+.seed {
+  color: color-mix(in srgb, var(--cream) 55%, transparent);
+}
+
+.brand p {
+  margin: 4px 0 0;
+  font-size: 14px;
+}
+
+form {
+  display: grid;
+  gap: 10px;
+}
+
+label {
+  display: grid;
+  gap: 4px;
+  color: var(--cream);
+  font-size: 13px;
+}
+
+input {
+  width: 100%;
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--cream) 40%, transparent);
+  border-radius: 10px;
+  color: var(--cream);
+  padding: 12px 14px;
+  font: inherit;
+}
+
+input:focus {
+  outline: 2px solid var(--moss);
+  border-color: var(--moss);
+}
+
+.hint {
+  margin: 0;
+  font-size: 12px;
+}
+
+.error {
+  color: var(--taken);
+  font-size: 13px;
+  margin: 0;
+}
+
+.primary {
+  margin-top: 6px;
+  width: 100%;
+  background: var(--moss);
+  color: var(--cream);
+  border: 0;
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 44px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.link {
+  margin-top: 8px;
+  background: none;
+  border: 0;
+  color: var(--cream);
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  padding: 8px 0;
+  min-height: 44px;
+}
+
+.seed {
+  margin-top: auto;
+  font-size: 12px;
+}
+
+@media (min-width: 768px) {
+  .auth {
+    align-items: center;
+    padding: 40px 24px;
+  }
+
+  .panel {
+    background: var(--forest);
+    border-radius: 20px;
+    padding: 28px;
+    max-height: min(100dvh - 48px, 920px);
+    overflow: auto;
+    box-shadow: 0 16px 48px rgb(0 0 0 / 35%);
+  }
+
+  .seed {
+    margin-top: 20px;
+  }
+}

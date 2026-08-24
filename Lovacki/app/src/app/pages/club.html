@@ -1,0 +1,57 @@
+<section class="page">
+  <header>
+    <h1>{{ s().club }}</h1>
+    <app-language-button [language]="state().language" (changed)="club.setLanguage($event)" />
+  </header>
+  <article>
+    <h2>{{ state().catalog?.club?.name || 'LD Patka' }}</h2>
+    <p>{{ state().catalog?.club?.ground }}</p>
+    <p>{{ state().catalog?.club?.areaHa }} ha · {{ state().catalog?.club?.founded }}</p>
+  </article>
+  <article>
+    <p class="label">{{ s().loggedInAs }}</p>
+    <h2>{{ state().currentUser?.displayName }}</h2>
+    @if (state().currentUser; as user) {
+      <p>@{{ user.username }} · {{ statusLabel(user) }}</p>
+      @if (user.licenseNumber) {
+        <p>{{ s().licenseNumber }}: {{ user.licenseNumber }}</p>
+      }
+    }
+    <button class="logout" type="button" (click)="logout()">{{ s().logout }}</button>
+  </article>
+  <article>
+    <h2>{{ s().addShortcut }}</h2>
+    <p>{{ s().shortcutBody }}</p>
+    <button class="action" type="button" (click)="install.addShortcut()">{{ s().addShortcut }}</button>
+  </article>
+  @if (club.isAdmin()) {
+    <article>
+      <h2>{{ s().adminTools }}</h2>
+      <p>{{ s().adminToolsBody }}</p>
+    </article>
+    <article>
+      <h2>{{ s().members }}</h2>
+      <p>{{ s().membersBody }}</p>
+      @for (account of members(); track account.id) {
+        <div class="member">
+          <strong>{{ account.displayName }}</strong>
+          <small>@{{ account.username }} · {{ statusLabel(account) }}</small>
+          <div class="chips">
+            <button type="button" [class.active]="!isKeeper(account)" (click)="club.setHunterStatus(account.id, 'MEMBER')">
+              {{ s().roleMember }}
+            </button>
+            <button type="button" [class.active]="isKeeper(account)" (click)="club.setHunterStatus(account.id, 'KEEPER')">
+              {{ s().roleKeeper }}
+            </button>
+          </div>
+        </div>
+      }
+    </article>
+  }
+  <article>
+    <h2>{{ s().dailyReset }}</h2>
+    <p>{{ format(s().dailyResetBody, state().nextResetLabel) }}</p>
+    <p>{{ s().legendBody }}</p>
+  </article>
+  <p class="foot">{{ s().language }}: ENG / HRV</p>
+</section>

@@ -1,0 +1,52 @@
+<div class="backdrop" (click)="closed.emit()"></div>
+<section class="sheet" role="dialog" aria-modal="true" [attr.aria-labelledby]="'stand-title'">
+  <h2 id="stand-title">{{ standDisplayName(s(), stand().code, stand().type, stand().feedingKind) }}</h2>
+  <p class="status" [class]="statusClass()">{{ statusText() }}</p>
+  @if (stand().custom) {
+    <p class="muted">{{ s().customStand }}</p>
+  }
+
+  <button class="outline" type="button" (click)="showOnMap.emit()">{{ s().showOnMap }}</button>
+
+  @if (canTake()) {
+    <button class="available" type="button" (click)="take()">{{ s().takeStand }}</button>
+  }
+  @if (canTourist()) {
+    <button class="gold" type="button" (click)="tourist()">{{ s().takeForTourist }}</button>
+  }
+  @if (canLeave()) {
+    <button class="outline" type="button" (click)="leave()">{{ s().leaveStand }}</button>
+  }
+  @if (canLeaveTourist()) {
+    <button class="outline" type="button" (click)="leave()">{{ s().leaveTouristStand }}</button>
+  }
+
+  <h3>{{ s().logSighting }}</h3>
+  <p class="muted">{{ s().whatSpotted }}</p>
+  <div class="chips">
+    @for (item of animalList(); track item.id) {
+      <button
+        type="button"
+        class="chip"
+        [class.selected]="selectedAnimal().id === item.id"
+        (click)="selectedAnimal.set(item)"
+      >
+        {{ item.emoji }} {{ item.label }}
+      </button>
+    }
+  </div>
+  <label>
+    <span>{{ s().count }}</span>
+    <input type="number" min="1" max="99" [value]="count()" (input)="setCount($event)" />
+  </label>
+  <label>
+    <span>{{ s().noteOptional }}</span>
+    <input [value]="note()" (input)="setNote($event)" />
+  </label>
+  <button class="primary" type="button" (click)="saveNote()">
+    {{ logged() ? s().savedAddAnother : s().saveSighting }}
+  </button>
+  @if (club.isAdmin()) {
+    <button class="danger" type="button" (click)="removeStand()">{{ s().deleteStand }}</button>
+  }
+</section>
