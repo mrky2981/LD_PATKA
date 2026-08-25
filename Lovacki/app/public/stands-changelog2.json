@@ -1,0 +1,116 @@
+{
+  "hunterName": "Admin",
+  "occupancies": [],
+  "sightings": [],
+  "users": [
+    {
+      "id": "seed-admin",
+      "username": "admin",
+      "displayName": "Admin",
+      "passwordSalt": "patka-admin-salt",
+      "passwordHash": "f0133b7f3d2b68b0c44b212f364f6300a2291a7162bef7903d64f24499771aa3",
+      "role": "ADMIN",
+      "licenseNumber": "ADMIN",
+      "status": "MEMBER"
+    }
+  ],
+  "currentUserId": "seed-admin",
+  "language": "hr",
+  "customStands": [
+    {
+      "id": "custom-23b4482a-f8de-4720-a981-3ab431ebb542",
+      "code": "16A",
+      "name": "Čeka 16A",
+      "type": "hunting",
+      "x": 0.08003989492586008,
+      "y": 0.4576168138910616,
+      "feedingKind": null,
+      "custom": true
+    },
+    {
+      "id": "custom-4fe20a7b-baa2-46e9-9bf9-0d128f0300dd",
+      "code": "52",
+      "name": "Čeka 52",
+      "type": "hunting",
+      "x": 0.579843829111137,
+      "y": 0.3440725967078099,
+      "feedingKind": null,
+      "custom": true
+    },
+    {
+      "id": "custom-6c2de316-12c9-4183-af39-8a0d2f9880f0",
+      "code": "68",
+      "name": "Čeka 68",
+      "type": "hunting",
+      "x": 0.7799334290670921,
+      "y": 0.5073151997043251,
+      "feedingKind": null,
+      "custom": true
+    },
+    {
+      "id": "custom-25363148-d9a9-41f9-ac56-c72f689c4caa",
+      "code": "121",
+      "name": "Hranilište sitna divljač 121",
+      "type": "feeding",
+      "x": 0.4248612863746161,
+      "y": 0.47976647122896326,
+      "feedingKind": "small",
+      "custom": true
+    },
+    {
+      "id": "custom-7dba9cf4-e9f4-401f-b852-e4180be8289d",
+      "code": "116",
+      "name": "Hranilište sitna divljač 116",
+      "type": "feeding",
+      "x": 0.26935535749538,
+      "y": 0.6827555133363885,
+      "feedingKind": "small",
+      "custom": true
+    },
+    {
+      "id": "custom-bb26065e-1d6a-421a-9931-e2952580da4b",
+      "code": "105",
+      "name": "Hranilište krupna divljač 105",
+      "type": "feeding",
+      "x": 0.3208754499523994,
+      "y": 0.3581789465470274,
+      "feedingKind": "large",
+      "custom": true
+    },
+    {
+      "id": "custom-ac56c27f-fc9a-4b41-a245-d23abf15d464",
+      "code": "120",
+      "name": "Hranilište sitna divljač 120",
+      "type": "feeding",
+      "x": 0.32608454931433223,
+      "y": 0.1988246905741487,
+      "feedingKind": "small",
+      "custom": true
+    },
+    {
+      "id": "custom-422bb631-acfe-4fc5-870b-0dc3cf35a250",
+      "code": "85/150",
+      "name": "Hranilište krupna divljač 85/150",
+      "type": "feeding",
+      "x": 0.4727252549667662,
+      "y": 0.5800277536413287,
+      "feedingKind": "large",
+      "custom": true
+    }
+  ],
+  "removedStandIds": [
+    "custom-380ecb1e-2540-480f-ac7b-e16537046a22",
+    "custom-7f9fa839-085e-4fbb-b96b-01b68911e6a2",
+    "custom-aab33330-3b32-45f0-a43a-ef93ccc0c22e",
+    "custom-628b68ea-0c12-42be-9da6-e96da095eb18",
+    "ceka-31",
+    "ceka-47",
+    "ceka-52",
+    "ceka-63",
+    "ceka-67",
+    "ceka-68"
+  ],
+  "claimEvents": [],
+  "duckSignups": [],
+  "purgedNonAdmins": true
+}
