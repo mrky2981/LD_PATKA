@@ -58,6 +58,10 @@ h3 {
   color: var(--feeding-small);
 }
 
+.status.feeding-auto {
+  color: var(--feeding-auto);
+}
+
 .muted {
   color: color-mix(in srgb, var(--cream) 70%, transparent);
   font-size: 13px;

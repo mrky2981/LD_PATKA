@@ -79,6 +79,11 @@ header p {
   color: var(--cream);
 }
 
+.auto-feed {
+  background: var(--feeding-auto);
+  color: var(--cream);
+}
+
 .ghost {
   background: transparent;
   color: var(--cream);
@@ -111,13 +116,17 @@ header p {
   transform-origin: 0 0;
   user-select: none;
   pointer-events: none;
+  contain: strict;
   will-change: auto;
-  --map-zoom: 1;
-  --pin-scale: 1;
+  overflow: hidden;
 }
 
 .viewport.panning .stage {
   will-change: transform;
+}
+
+.viewport.panning .mark {
+  visibility: hidden;
 }
 
 .ground {
@@ -125,16 +134,24 @@ header p {
   height: 100%;
   max-width: none;
   display: block;
+  image-rendering: auto;
 }
 
 .pins {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
   overflow: visible;
+  pointer-events: none;
+  z-index: 2;
 }
 
 .pin {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 0;
   height: 0;
   color: #43a047;
@@ -151,8 +168,6 @@ header p {
   background: currentColor;
   border: 1.5px solid #fff;
   box-shadow: 0 0 0 1px #111;
-  transform: scale(var(--pin-scale, 1));
-  transform-origin: 50% 50%;
 }
 
 .mark {
@@ -162,7 +177,6 @@ header p {
   width: 34px;
   height: 44px;
   margin-left: -17px;
-  transform: scale(var(--pin-scale, 1));
   transform-origin: 50% 100%;
 }
 
@@ -178,6 +192,10 @@ header p {
   color: #ef6c00;
 }
 
+.pin.feeding-auto {
+  color: #00897b;
+}
+
 .pin.feeding-large .mark {
   width: 30px;
   height: 30px;
@@ -188,6 +206,12 @@ header p {
   width: 40px;
   height: 26px;
   margin-left: -20px;
+}
+
+.pin.feeding-auto .mark {
+  width: 32px;
+  height: 36px;
+  margin-left: -16px;
 }
 
 .mark svg {
@@ -315,6 +339,10 @@ header p {
 
 .dot.feed-small {
   background: var(--feeding-small);
+}
+
+.dot.feed-auto {
+  background: var(--feeding-auto);
 }
 
 .dot.off {

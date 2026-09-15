@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { ClubService } from '../core/club';
+import { ClubFacade } from '../application/club-facade';
 import { formatZagreb } from '../core/hunting-day';
 import { animalLabel, standDisplayName } from '../core/l10n';
 import { mySightings } from '../core/models';
@@ -59,7 +59,7 @@ import { mySightings } from '../core/models';
   `,
 })
 export class SightingsPage {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly s = this.club.strings;
   readonly animalLabel = animalLabel;
   readonly formatZagreb = formatZagreb;

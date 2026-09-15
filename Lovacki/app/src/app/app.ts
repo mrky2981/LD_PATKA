@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, isDevMode, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
-import { ClubService } from './core/club';
+import { ClubFacade } from './application/club-facade';
 import { SplashPage } from './pages/splash';
 
 @Component({
@@ -44,7 +44,7 @@ import { SplashPage } from './pages/splash';
   `,
 })
 export class App {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly updateReady = signal(false);
 
   constructor() {

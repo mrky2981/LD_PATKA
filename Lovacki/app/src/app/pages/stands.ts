@@ -1,8 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClubService } from '../core/club';
-import { occupancyLabel, standDisplayName, format } from '../core/l10n';
-import { Stand, isFeeding, isHunting, isSmallFeeding, isTaken, isTakenByMe, isTouristOccupancy, occupancyFor, todaysDuckSignups } from '../core/models';
+import { ClubFacade } from '../application/club-facade';
+import { occupancyLabel, standDisplayName, feedingKindLabel, format } from '../core/l10n';
+import {
+  Stand,
+  feedingKindColor,
+  hasMapPosition,
+  isFeeding,
+  isHunting,
+  isTaken,
+  isTakenByMe,
+  isTouristOccupancy,
+  occupancyFor,
+  todaysDuckSignups,
+} from '../core/models';
 import { DuckHuntSheet } from '../ui/duck-hunt-sheet';
 import { StandSheet } from '../ui/stand-sheet';
 
@@ -16,7 +27,7 @@ type Filter = 'all' | 'available' | 'taken' | 'feeding';
   styleUrl: './stands.scss',
 })
 export class StandsPage {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   private readonly router = inject(Router);
   readonly s = this.club.strings;
   readonly state = this.club.state;
@@ -71,21 +82,15 @@ export class StandsPage {
   }
 
   color(stand: Stand): string {
-    if (isSmallFeeding(stand)) {
-      return 'var(--feeding-small)';
-    }
     if (isFeeding(stand)) {
-      return 'var(--feeding)';
+      return feedingKindColor(stand.feedingKind);
     }
     return occupancyFor(this.state(), stand.id) ? 'var(--taken)' : 'var(--available)';
   }
 
   subtitle(stand: Stand): string {
-    if (isSmallFeeding(stand)) {
-      return this.s().feedingSmall;
-    }
     if (isFeeding(stand)) {
-      return this.s().feedingLarge;
+      return feedingKindLabel(this.s(), stand.feedingKind);
     }
     const occ = occupancyFor(this.state(), stand.id);
     if (occ) {
@@ -95,6 +100,9 @@ export class StandsPage {
   }
 
   showOnMap(stand: Stand): void {
+    if (!hasMapPosition(stand)) {
+      return;
+    }
     this.club.focusStandId.set(stand.id);
     this.selected.set(null);
     void this.router.navigateByUrl('/map');

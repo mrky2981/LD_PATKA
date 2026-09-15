@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
-import { ClubService } from '../core/club';
+import { ClubFacade } from '../application/club-facade';
 import { formatZagreb } from '../core/hunting-day';
 import { format } from '../core/l10n';
 
@@ -42,7 +42,7 @@ import { format } from '../core/l10n';
   `,
 })
 export class HistoryPage {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly s = this.club.strings;
   readonly formatZagreb = formatZagreb;
   readonly events = computed(() => this.club.state().claimEvents);

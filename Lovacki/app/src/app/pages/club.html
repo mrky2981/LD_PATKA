@@ -12,10 +12,7 @@
     <p class="label">{{ s().loggedInAs }}</p>
     <h2>{{ state().currentUser?.displayName }}</h2>
     @if (state().currentUser; as user) {
-      <p>@{{ user.username }} · {{ statusLabel(user) }}</p>
-      @if (user.licenseNumber) {
-        <p>{{ s().licenseNumber }}: {{ user.licenseNumber }}</p>
-      }
+      <p>{{ user.licenseNumber }} · {{ statusLabel(user) }}</p>
     }
     <button class="logout" type="button" (click)="logout()">{{ s().logout }}</button>
   </article>
@@ -35,7 +32,7 @@
       @for (account of members(); track account.id) {
         <div class="member">
           <strong>{{ account.displayName }}</strong>
-          <small>@{{ account.username }} · {{ statusLabel(account) }}</small>
+          <small>{{ account.licenseNumber }} · {{ statusLabel(account) }}</small>
           <div class="chips">
             <button type="button" [class.active]="!isKeeper(account)" (click)="club.setHunterStatus(account.id, 'MEMBER')">
               {{ s().roleMember }}

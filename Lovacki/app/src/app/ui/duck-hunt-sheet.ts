@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, output } from '@angular/core';
-import { ClubService } from '../core/club';
+import { ClubFacade } from '../application/club-facade';
 import { format } from '../core/l10n';
 import { DuckSignup, canBookForGuests, canRemoveDuckSignup, isSignedUpForDucks, isTouristSignup, todaysDuckSignups } from '../core/models';
 
@@ -45,7 +45,7 @@ import { DuckSignup, canBookForGuests, canRemoveDuckSignup, isSignedUpForDucks, 
   styleUrl: './stand-sheet.scss',
 })
 export class DuckHuntSheet {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly closed = output<void>();
   readonly s = this.club.strings;
   readonly format = format;

@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { ClubService } from '../core/club';
+import { ClubFacade } from '../application/club-facade';
 import { InstallService } from '../core/install';
 import { format, statusLabel } from '../core/l10n';
-import { UserAccount, isAdmin, isKeeper } from '../core/models';
+import { Member, isAdmin, isKeeper } from '../core/models';
 import { LanguageButton } from '../ui/language-button';
 
 @Component({
@@ -14,13 +14,13 @@ import { LanguageButton } from '../ui/language-button';
   styleUrl: './club.scss',
 })
 export class ClubPage {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly install = inject(InstallService);
   private readonly router = inject(Router);
   readonly s = this.club.strings;
   readonly state = this.club.state;
   readonly format = format;
-  readonly statusLabel = (user: UserAccount) =>
+  readonly statusLabel = (user: Member) =>
     statusLabel(this.s(), isAdmin(user), isKeeper(user));
   readonly isAdmin = isAdmin;
   readonly isKeeper = isKeeper;

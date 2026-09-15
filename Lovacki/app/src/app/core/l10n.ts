@@ -1,4 +1,4 @@
-import { Animal, AppLang } from './models';
+import { Animal, AppLang, FeedingKind } from '../domain';
 
 export function format(template: string, ...args: Array<string | number>): string {
   let index = 0;
@@ -23,6 +23,7 @@ export interface Strings {
   feedingStand: string;
   feedingLarge: string;
   feedingSmall: string;
+  feedingAutomatic: string;
   huntingStand: string;
   takenBy: string;
   available: string;
@@ -47,6 +48,7 @@ export interface Strings {
   legendFeeding: string;
   legendFeedingLarge: string;
   legendFeedingSmall: string;
+  legendFeedingAutomatic: string;
   legendTapHint: string;
   legendHidden: string;
   legendMinimize: string;
@@ -55,6 +57,8 @@ export interface Strings {
   register: string;
   username: string;
   loginIdentifier: string;
+  firstName: string;
+  lastName: string;
   password: string;
   confirmPassword: string;
   displayName: string;
@@ -84,6 +88,7 @@ export interface Strings {
   addFeeding: string;
   addFeedingLarge: string;
   addFeedingSmall: string;
+  addFeedingAutomatic: string;
   cancelPlace: string;
   tapToPlace: string;
   newStandTitle: string;
@@ -163,6 +168,7 @@ const EN: Strings = {
   feedingStand: 'Feeding stand',
   feedingLarge: 'Large-game feeder',
   feedingSmall: 'Small-game feeder',
+  feedingAutomatic: 'Automatic feeder',
   huntingStand: 'Stand',
   takenBy: 'Taken by',
   available: 'Available',
@@ -182,12 +188,13 @@ const EN: Strings = {
   dailyResetBody: 'Hunting stands go back to available every day at 12:00 (Europe/Zagreb). Next reset: %s.',
   legend: 'Legend',
   legendBody:
-    'Green = free stands. Red = taken stands. Gold diamond = large-game feeder. Orange trough = small-game feeder. On the map, tap a legend item to hide or show it.',
+    'Green = free stands. Red = taken stands. Gold = large-game feeder. Orange = small-game feeder. Teal hopper = automatic feeder. On the map, tap a legend item to hide or show it.',
   legendFree: 'Free stands',
   legendTaken: 'Taken stands',
   legendFeeding: 'Feeding stands',
   legendFeedingLarge: 'Large-game feeders',
   legendFeedingSmall: 'Small-game feeders',
+  legendFeedingAutomatic: 'Automatic feeders',
   legendTapHint: 'Tap a color to show or hide it on the map',
   legendHidden: 'Hidden',
   legendMinimize: 'Minimize',
@@ -195,7 +202,9 @@ const EN: Strings = {
   login: 'Log in',
   register: 'Register',
   username: 'Username',
-  loginIdentifier: 'Username or hunting license number',
+  loginIdentifier: 'Hunting license number',
+  firstName: 'First name',
+  lastName: 'Last name',
   password: 'Password',
   confirmPassword: 'Confirm password',
   displayName: 'Your name',
@@ -212,10 +221,10 @@ const EN: Strings = {
   adminCode: 'Admin code (optional)',
   adminCodeHint: 'Enter the club admin code to register as admin.',
   errorBlank: 'Fill in all fields.',
-  errorShortPassword: 'Password must be at least 4 characters.',
+  errorShortPassword: 'Password must be at least 6 characters.',
   errorPasswordMatch: 'Passwords do not match.',
   errorUserTaken: 'That username is already taken.',
-  errorBadLogin: 'Wrong username or password.',
+  errorBadLogin: 'Wrong license number or password.',
   errorBadAdminCode: 'Wrong admin code.',
   errorLicenseBlank: 'Enter your hunting license number.',
   errorLicenseShort: 'License number must be at least 3 characters.',
@@ -225,6 +234,7 @@ const EN: Strings = {
   addFeeding: 'Add feeding stand',
   addFeedingLarge: 'Add large-game feeder',
   addFeedingSmall: 'Add small-game feeder',
+  addFeedingAutomatic: 'Add automatic feeder',
   cancelPlace: 'Cancel',
   tapToPlace: 'Tap the map to place the new stand',
   newStandTitle: 'New stand',
@@ -234,8 +244,8 @@ const EN: Strings = {
   customStand: 'Added by admin',
   adminTools: 'Admin tools',
   adminToolsBody:
-    'On the map, use Add hunting stand or add a large-game or small-game feeder, then tap the location. Below, set who is a gamekeeper so they can book stands for tourists.',
-  seedHint: 'Default admin: admin / patka1946',
+    'On the map, add a hunting stand or a large/small-game/automatic feeder, then tap the location. Below, set who is a gamekeeper so they can book stands for tourists.',
+  seedHint: 'Default admin license: ADMIN / patka1946',
   history: 'History',
   historyEmpty: 'No stand claims yet.',
   historyClaim: '%s claimed stand %s',
@@ -306,6 +316,7 @@ const HR: Strings = {
   feedingStand: 'Hranilište',
   feedingLarge: 'Hranilište krupna divljač',
   feedingSmall: 'Hranilište sitna divljač',
+  feedingAutomatic: 'Automatska hranilica',
   huntingStand: 'Čeka',
   takenBy: 'Zauzeo/la',
   available: 'Slobodna',
@@ -326,12 +337,13 @@ const HR: Strings = {
     'Čeke se svaki dan u 12:00 (Europa/Zagreb) vraćaju na slobodne. Sljedeći reset: %s.',
   legend: 'Legenda',
   legendBody:
-    'Zeleno = slobodne čeke. Crveno = zauzete. Zlatni dijamant = hranilište krupne divljači. Narančasto korito = hranilište sitne divljači. Na karti dodirni stavku legende da je sakriješ ili pokažeš.',
+    'Zeleno = slobodne čeke. Crveno = zauzete. Zlatni dijamant = hranilište krupne divljači. Narančasto korito = hranilište sitne divljači. Teal spremnik = automatska hranilica. Na karti dodirni stavku legende da je sakriješ ili pokažeš.',
   legendFree: 'Slobodne čeke',
   legendTaken: 'Zauzete čeke',
   legendFeeding: 'Hranilišta',
   legendFeedingLarge: 'Hranilišta krupna divljač',
   legendFeedingSmall: 'Hranilišta sitna divljač',
+  legendFeedingAutomatic: 'Automatske hranilice',
   legendTapHint: 'Dodirni boju da je pokažeš ili sakriješ na karti',
   legendHidden: 'Skriveno',
   legendMinimize: 'Smanji',
@@ -339,7 +351,9 @@ const HR: Strings = {
   login: 'Prijava',
   register: 'Registracija',
   username: 'Korisničko ime',
-  loginIdentifier: 'Korisničko ime ili broj iskaznice',
+  loginIdentifier: 'Broj lovačke iskaznice',
+  firstName: 'Ime',
+  lastName: 'Prezime',
   password: 'Lozinka',
   confirmPassword: 'Potvrdi lozinku',
   displayName: 'Tvoje ime',
@@ -356,10 +370,10 @@ const HR: Strings = {
   adminCode: 'Admin kod (nije obavezno)',
   adminCodeHint: 'Unesi admin kod društva da se registriraš kao administrator.',
   errorBlank: 'Ispuni sva polja.',
-  errorShortPassword: 'Lozinka mora imati najmanje 4 znaka.',
+  errorShortPassword: 'Lozinka mora imati najmanje 6 znakova.',
   errorPasswordMatch: 'Lozinke se ne podudaraju.',
   errorUserTaken: 'To korisničko ime je zauzeto.',
-  errorBadLogin: 'Pogrešno korisničko ime ili lozinka.',
+  errorBadLogin: 'Pogrešan broj iskaznice ili lozinka.',
   errorBadAdminCode: 'Pogrešan admin kod.',
   errorLicenseBlank: 'Unesi broj lovačke iskaznice.',
   errorLicenseShort: 'Broj iskaznice mora imati najmanje 3 znaka.',
@@ -369,6 +383,7 @@ const HR: Strings = {
   addFeeding: 'Dodaj hranilište',
   addFeedingLarge: 'Dodaj hranilište krupna',
   addFeedingSmall: 'Dodaj hranilište sitna',
+  addFeedingAutomatic: 'Dodaj automatsku hranilicu',
   cancelPlace: 'Odustani',
   tapToPlace: 'Dodirni kartu da postaviš novo mjesto',
   newStandTitle: 'Novo mjesto',
@@ -378,8 +393,8 @@ const HR: Strings = {
   customStand: 'Dodao administrator',
   adminTools: 'Admin alati',
   adminToolsBody:
-    'Na karti odaberi Dodaj čeku ili dodaj hranilište krupne ili sitne divljači, zatim dodirni lokaciju. Dolje odredi tko je lovnik da može prijavljivati čeke za turiste.',
-  seedHint: 'Početni admin: admin / patka1946',
+    'Na karti odaberi Dodaj čeku ili dodaj hranilište krupne, sitne divljači ili automatsku hranilicu, zatim dodirni lokaciju. Dolje odredi tko je lovnik da može prijavljivati čeke za turiste.',
+  seedHint: 'Početni admin: iskaznica ADMIN / patka1946',
   history: 'Povijest',
   historyEmpty: 'Još nema prijava na čeke.',
   historyClaim: '%s zauzeo/la čeku %s',
@@ -479,15 +494,24 @@ export function animals(strings: Strings): Animal[] {
   ];
 }
 
+export function feedingKindLabel(strings: Strings, feedingKind?: FeedingKind | null): string {
+  if (feedingKind === 'small') {
+    return strings.feedingSmall;
+  }
+  if (feedingKind === 'automatic') {
+    return strings.feedingAutomatic;
+  }
+  return strings.feedingLarge;
+}
+
 export function standDisplayName(
   strings: Strings,
   code: string,
-  type: string,
-  feedingKind?: string | null,
+  type: 'hunting' | 'feeding' | string,
+  feedingKind?: FeedingKind | null,
 ): string {
   if (type === 'feeding') {
-    const kind = feedingKind === 'small' ? strings.feedingSmall : strings.feedingLarge;
-    return `${kind} ${code}`;
+    return `${feedingKindLabel(strings, feedingKind)} ${code}`;
   }
   return `${strings.huntingStand} ${code}`;
 }

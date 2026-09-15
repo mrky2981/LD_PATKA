@@ -6,7 +6,9 @@
     <p class="muted">{{ s().customStand }}</p>
   }
 
-  <button class="outline" type="button" (click)="showOnMap.emit()">{{ s().showOnMap }}</button>
+  @if (onMap()) {
+    <button class="outline" type="button" (click)="showOnMap.emit()">{{ s().showOnMap }}</button>
+  }
 
   @if (canTake()) {
     <button class="available" type="button" (click)="take()">{{ s().takeStand }}</button>

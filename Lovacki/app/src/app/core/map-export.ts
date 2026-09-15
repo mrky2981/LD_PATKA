@@ -1,10 +1,11 @@
-import { Stand, isFeeding, isSmallFeeding } from './models';
+import { Stand, hasMapPosition, isAutomaticFeeding, isFeeding, isSmallFeeding } from './models';
 import { downloadBlob } from './file-download';
 
 const COLOR_FREE = '#43a047';
 const COLOR_TAKEN = '#e53935';
 const COLOR_FEED_LARGE = '#f4b400';
 const COLOR_FEED_SMALL = '#ef6c00';
+const COLOR_FEED_AUTO = '#00897b';
 const COLOR_SALT = '#7cb342';
 
 const HUNTING_PATHS = [
@@ -50,9 +51,17 @@ export async function downloadMarkedMap(options: {
   const pinH = clamp(height * 0.03, 30, 58);
   const largeH = pinH * 0.9;
   const smallH = pinH * 0.7;
+  const autoH = pinH * 0.85;
   for (const stand of options.stands) {
-    const x = stand.x * width;
-    const y = stand.y * height;
+    if (!hasMapPosition(stand)) {
+      continue;
+    }
+    const x = stand.x! * width;
+    const y = stand.y! * height;
+    if (isAutomaticFeeding(stand)) {
+      drawAutomaticFeedingPin(ctx, x, y, autoH, COLOR_FEED_AUTO, stand.code);
+      continue;
+    }
     if (isSmallFeeding(stand)) {
       drawSmallFeedingPin(ctx, x, y, smallH, COLOR_FEED_SMALL, stand.code);
       continue;
@@ -118,6 +127,37 @@ function drawLargeFeedingPin(
   ctx.stroke();
   ctx.restore();
   drawCode(ctx, cx, cy - h * 0.5, h * 0.36, code);
+}
+
+function drawAutomaticFeedingPin(
+  ctx: CanvasRenderingContext2D,
+  cx: number,
+  cy: number,
+  h: number,
+  color: string,
+  code: string,
+): void {
+  const s = h / 36;
+  ctx.save();
+  ctx.translate(cx, cy);
+  ctx.scale(s, s);
+  ctx.translate(-16, -36);
+  ctx.fillStyle = color;
+  ctx.beginPath();
+  ctx.moveTo(8, 10);
+  ctx.lineTo(24, 10);
+  ctx.lineTo(27, 18);
+  ctx.lineTo(5, 18);
+  ctx.closePath();
+  ctx.fill();
+  ctx.fillRect(7, 18, 18, 12);
+  ctx.fillRect(14, 6, 4, 4);
+  ctx.fillStyle = '#b2dfdb';
+  ctx.beginPath();
+  ctx.arc(16, 24, 3, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+  drawCode(ctx, cx, cy - h * 0.55, h * 0.32, code);
 }
 
 function drawSmallFeedingPin(

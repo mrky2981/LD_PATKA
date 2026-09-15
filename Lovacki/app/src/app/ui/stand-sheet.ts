@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
-import { ClubService } from '../core/club';
+import { ClubFacade } from '../application/club-facade';
 import { animals, occupancyLabel, standDisplayName } from '../core/l10n';
 import {
   Stand,
   canBookForGuests,
   canRelease,
+  hasMapPosition,
   isFeeding,
   isHunting,
   isTakenByMe,
@@ -19,7 +20,7 @@ import {
   styleUrl: './stand-sheet.scss',
 })
 export class StandSheet {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly stand = input.required<Stand>();
   readonly closed = output<void>();
   readonly showOnMap = output<void>();
@@ -35,11 +36,12 @@ export class StandSheet {
 
   readonly occ = computed(() => occupancyFor(this.state(), this.stand().id));
   readonly mine = computed(() => isTakenByMe(this.state(), this.stand().id));
+  readonly onMap = computed(() => hasMapPosition(this.stand()));
   readonly statusText = computed(() => {
     const stand = this.stand();
     const occ = this.occ();
     if (isFeeding(stand)) {
-      return stand.feedingKind === 'small' ? this.s().feedingSmall : this.s().feedingLarge;
+      return this.s().feedingNotClaimed;
     }
     if (occ) {
       return occupancyLabel(this.s(), occ, isTouristOccupancy(occ), this.mine());
@@ -47,8 +49,15 @@ export class StandSheet {
     return this.s().available;
   });
   readonly statusClass = computed(() => {
-    if (isFeeding(this.stand())) {
-      return this.stand().feedingKind === 'small' ? 'feeding-small' : 'feeding';
+    const stand = this.stand();
+    if (isFeeding(stand)) {
+      if (stand.feedingKind === 'small') {
+        return 'feeding-small';
+      }
+      if (stand.feedingKind === 'automatic') {
+        return 'feeding-auto';
+      }
+      return 'feeding';
     }
     return this.occ() ? 'taken' : 'free';
   });

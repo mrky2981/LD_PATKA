@@ -8,922 +8,989 @@
     "resetHour": 12
   },
   "map": {
-    "width": 2800,
-    "height": 1981,
-    "file": "LD_PATKA.jpg"
+    "width": 10110,
+    "height": 7152,
+    "file": "map_loviste.webp"
   },
   "stands": [
-    {
-      "id": "ceka-22",
-      "code": "22",
-      "name": "Čeka 22",
-      "type": "hunting",
-      "x": 0.22166,
-      "y": 0.23008
-    },
-    {
-      "id": "ceka-70",
-      "code": "70",
-      "name": "Čeka 70",
-      "type": "hunting",
-      "x": 0.81419,
-      "y": 0.49694
-    },
-    {
-      "id": "ceka-63",
-      "code": "63",
-      "name": "Čeka 63",
-      "type": "hunting",
-      "x": 0.63113,
-      "y": 0.77755
-    },
-    {
-      "id": "ceka-33",
-      "code": "33",
-      "name": "Čeka 33",
-      "type": "hunting",
-      "x": 0.36199,
-      "y": 0.32845
-    },
-    {
-      "id": "ceka-28",
-      "code": "28",
-      "name": "Čeka 28",
-      "type": "hunting",
-      "x": 0.40969,
-      "y": 0.24682
-    },
-    {
-      "id": "ceka-61a",
-      "code": "61A",
-      "name": "Čeka 61A",
-      "type": "hunting",
-      "x": 0.6875,
-      "y": 0.64105
-    },
-    {
-      "id": "ceka-29",
-      "code": "29",
-      "name": "Čeka 29",
-      "type": "hunting",
-      "x": 0.40852,
-      "y": 0.2084
-    },
-    {
-      "id": "ceka-23",
-      "code": "23",
-      "name": "Čeka 23",
-      "type": "hunting",
-      "x": 0.2647,
-      "y": 0.19584
-    },
-    {
-      "id": "ceka-68",
-      "code": "68",
-      "name": "Čeka 68",
-      "type": "hunting",
-      "x": 0.77993,
-      "y": 0.53476
-    },
     {
       "id": "ceka-16",
       "code": "16",
       "name": "Čeka 16",
       "type": "hunting",
-      "x": 0.05552,
-      "y": 0.57318
-    },
-    {
-      "id": "ceka-20",
-      "code": "20",
-      "name": "Čeka 20",
-      "type": "hunting",
-      "x": 0.2665,
-      "y": 0.25534
-    },
-    {
-      "id": "ceka-64",
-      "code": "64",
-      "name": "Čeka 64",
-      "type": "hunting",
-      "x": 0.62838,
-      "y": 0.81656
-    },
-    {
-      "id": "ceka-34",
-      "code": "34",
-      "name": "Čeka 34",
-      "type": "hunting",
-      "x": 0.36178,
-      "y": 0.27029
-    },
-    {
-      "id": "ceka-17a",
-      "code": "17A",
-      "name": "Čeka 17A",
-      "type": "hunting",
-      "x": 0.23572,
-      "y": 0.37928
-    },
-    {
-      "id": "ceka-41",
-      "code": "41",
-      "name": "Čeka 41",
-      "type": "hunting",
-      "x": 0.46648,
-      "y": 0.54268
-    },
-    {
-      "id": "ceka-45",
-      "code": "45",
-      "name": "Čeka 45",
-      "type": "hunting",
-      "x": 0.47726,
-      "y": 0.66318
-    },
-    {
-      "id": "ceka-30",
-      "code": "30",
-      "name": "Čeka 30",
-      "type": "hunting",
-      "x": 0.30266,
-      "y": 0.30393
-    },
-    {
-      "id": "ceka-71",
-      "code": "71",
-      "name": "Čeka 71",
-      "type": "hunting",
-      "x": 0.84317,
-      "y": 0.50202
-    },
-    {
-      "id": "ceka-19",
-      "code": "19",
-      "name": "Čeka 19",
-      "type": "hunting",
-      "x": 0.25169,
-      "y": 0.29705
-    },
-    {
-      "id": "ceka-62",
-      "code": "62",
-      "name": "Čeka 62",
-      "type": "hunting",
-      "x": 0.61104,
-      "y": 0.77964
-    },
-    {
-      "id": "ceka-48",
-      "code": "48",
-      "name": "Čeka 48",
-      "type": "hunting",
-      "x": 0.45929,
-      "y": 0.30916
-    },
-    {
-      "id": "ceka-37",
-      "code": "37",
-      "name": "Čeka 37",
-      "type": "hunting",
-      "x": 0.38187,
-      "y": 0.39602
-    },
-    {
-      "id": "ceka-24",
-      "code": "24",
-      "name": "Čeka 24",
-      "type": "hunting",
-      "x": 0.27453,
-      "y": 0.1803
-    },
-    {
-      "id": "ceka-25",
-      "code": "25",
-      "name": "Čeka 25",
-      "type": "hunting",
-      "x": 0.27157,
-      "y": 0.15084
-    },
-    {
-      "id": "ceka-53",
-      "code": "53",
-      "name": "Čeka 53",
-      "type": "hunting",
-      "x": 0.59222,
-      "y": 0.33234
-    },
-    {
-      "id": "ceka-43",
-      "code": "43",
-      "name": "Čeka 43",
-      "type": "hunting",
-      "x": 0.47113,
-      "y": 0.59546
-    },
-    {
-      "id": "ceka-36",
-      "code": "36",
-      "name": "Čeka 36",
-      "type": "hunting",
-      "x": 0.39488,
-      "y": 0.33249
-    },
-    {
-      "id": "ceka-69",
-      "code": "69",
-      "name": "Čeka 69",
-      "type": "hunting",
-      "x": 0.76734,
-      "y": 0.44162
-    },
-    {
-      "id": "ceka-61",
-      "code": "61",
-      "name": "Čeka 61",
-      "type": "hunting",
-      "x": 0.70643,
-      "y": 0.5077
-    },
-    {
-      "id": "ceka-55",
-      "code": "55",
-      "name": "Čeka 55",
-      "type": "hunting",
-      "x": 0.58989,
-      "y": 0.38989
-    },
-    {
-      "id": "ceka-35",
-      "code": "35",
-      "name": "Čeka 35",
-      "type": "hunting",
-      "x": 0.41138,
-      "y": 0.28136
-    },
-    {
-      "id": "ceka-66",
-      "code": "66",
-      "name": "Čeka 66",
-      "type": "hunting",
-      "x": 0.81462,
-      "y": 0.58185
-    },
-    {
-      "id": "ceka-44",
-      "code": "44",
-      "name": "Čeka 44",
-      "type": "hunting",
-      "x": 0.44099,
-      "y": 0.65376
-    },
-    {
-      "id": "ceka-31",
-      "code": "31",
-      "name": "Čeka 31",
-      "type": "hunting",
-      "x": 0.34169,
-      "y": 0.30632
-    },
-    {
-      "id": "ceka-47",
-      "code": "47",
-      "name": "Čeka 47",
-      "type": "hunting",
-      "x": 0.43803,
-      "y": 0.75542
-    },
-    {
-      "id": "ceka-21",
-      "code": "21",
-      "name": "Čeka 21",
-      "type": "hunting",
-      "x": 0.24376,
-      "y": 0.24054
-    },
-    {
-      "id": "ceka-49",
-      "code": "49",
-      "name": "Čeka 49",
-      "type": "hunting",
-      "x": 0.48826,
-      "y": 0.32965
-    },
-    {
-      "id": "ceka-27",
-      "code": "27",
-      "name": "Čeka 27",
-      "type": "hunting",
-      "x": 0.38896,
-      "y": 0.24383
-    },
-    {
-      "id": "ceka-56",
-      "code": "56",
-      "name": "Čeka 56",
-      "type": "hunting",
-      "x": 0.57762,
-      "y": 0.41441
-    },
-    {
-      "id": "ceka-38",
-      "code": "38",
-      "name": "Čeka 38",
-      "type": "hunting",
-      "x": 0.42386,
-      "y": 0.37405
-    },
-    {
-      "id": "ceka-26",
-      "code": "26",
-      "name": "Čeka 26",
-      "type": "hunting",
-      "x": 0.34232,
-      "y": 0.23561
-    },
-    {
-      "id": "ceka-46",
-      "code": "46",
-      "name": "Čeka 46",
-      "type": "hunting",
-      "x": 0.44279,
-      "y": 0.69547
-    },
-    {
-      "id": "ceka-54",
-      "code": "54",
-      "name": "Čeka 54",
-      "type": "hunting",
-      "x": 0.61368,
-      "y": 0.39333
-    },
-    {
-      "id": "ceka-18",
-      "code": "18",
-      "name": "Čeka 18",
-      "type": "hunting",
-      "x": 0.19596,
-      "y": 0.31784
+      "x": 0.05747,
+      "y": 0.56991
     },
     {
       "id": "ceka-17",
       "code": "17",
       "name": "Čeka 17",
       "type": "hunting",
-      "x": 0.19289,
-      "y": 0.42278
+      "x": 0.19486,
+      "y": 0.41974
     },
     {
-      "id": "ceka-58",
-      "code": "58",
-      "name": "Čeka 58",
+      "id": "ceka-17a",
+      "code": "17A",
+      "name": "Čeka 17A",
       "type": "hunting",
-      "x": 0.4908,
-      "y": 0.42562
+      "x": 0.23769,
+      "y": 0.3764
+    },
+    {
+      "id": "ceka-18",
+      "code": "18",
+      "name": "Čeka 18",
+      "type": "hunting",
+      "x": 0.19792,
+      "y": 0.31488
+    },
+    {
+      "id": "ceka-19",
+      "code": "19",
+      "name": "Čeka 19",
+      "type": "hunting",
+      "x": 0.25371,
+      "y": 0.29418
+    },
+    {
+      "id": "ceka-20",
+      "code": "20",
+      "name": "Čeka 20",
+      "type": "hunting",
+      "x": 0.26855,
+      "y": 0.25252
+    },
+    {
+      "id": "ceka-21",
+      "code": "21",
+      "name": "Čeka 21",
+      "type": "hunting",
+      "x": 0.2456,
+      "y": 0.2377
+    },
+    {
+      "id": "ceka-22",
+      "code": "22",
+      "name": "Čeka 22",
+      "type": "hunting",
+      "x": 0.22364,
+      "y": 0.22735
+    },
+    {
+      "id": "ceka-23",
+      "code": "23",
+      "name": "Čeka 23",
+      "type": "hunting",
+      "x": 0.26617,
+      "y": 0.19994
+    },
+    {
+      "id": "ceka-24",
+      "code": "24",
+      "name": "Čeka 24",
+      "type": "hunting",
+      "x": 0.27656,
+      "y": 0.17757
+    },
+    {
+      "id": "ceka-25",
+      "code": "25",
+      "name": "Čeka 25",
+      "type": "hunting",
+      "x": 0.27349,
+      "y": 0.14793
+    },
+    {
+      "id": "ceka-26",
+      "code": "26",
+      "name": "Čeka 26",
+      "type": "hunting",
+      "x": 0.34431,
+      "y": 0.23266
+    },
+    {
+      "id": "ceka-27",
+      "code": "27",
+      "name": "Čeka 27",
+      "type": "hunting",
+      "x": 0.3909,
+      "y": 0.24105
+    },
+    {
+      "id": "ceka-28",
+      "code": "28",
+      "name": "Čeka 28",
+      "type": "hunting",
+      "x": 0.41167,
+      "y": 0.24413
+    },
+    {
+      "id": "ceka-29",
+      "code": "29",
+      "name": "Čeka 29",
+      "type": "hunting",
+      "x": 0.41039,
+      "y": 0.20582
+    },
+    {
+      "id": "ceka-30",
+      "code": "30",
+      "name": "Čeka 30",
+      "type": "hunting",
+      "x": 0.31958,
+      "y": 0.26622
     },
     {
       "id": "ceka-32",
       "code": "32",
       "name": "Čeka 32",
       "type": "hunting",
-      "x": 0.33746,
-      "y": 0.34445
+      "x": 0.33937,
+      "y": 0.34144
     },
     {
-      "id": "ceka-72",
-      "code": "72",
-      "name": "Čeka 72",
+      "id": "ceka-33",
+      "code": "33",
+      "name": "Čeka 33",
       "type": "hunting",
-      "x": 0.83333,
-      "y": 0.54029
+      "x": 0.3639,
+      "y": 0.3255
     },
     {
-      "id": "ceka-42",
-      "code": "42",
-      "name": "Čeka 42",
+      "id": "ceka-34",
+      "code": "34",
+      "name": "Čeka 34",
       "type": "hunting",
-      "x": 0.5,
-      "y": 0.57826
+      "x": 0.3637,
+      "y": 0.26734
     },
     {
-      "id": "ceka-52",
-      "code": "52",
-      "name": "Čeka 52",
+      "id": "ceka-35",
+      "code": "35",
+      "name": "Čeka 35",
       "type": "hunting",
-      "x": 0.57953,
-      "y": 0.34355
+      "x": 0.41335,
+      "y": 0.27824
     },
     {
-      "id": "ceka-40",
-      "code": "40",
-      "name": "Čeka 40",
+      "id": "ceka-36",
+      "code": "36",
+      "name": "Čeka 36",
       "type": "hunting",
-      "x": 0.42343,
-      "y": 0.5382
+      "x": 0.39693,
+      "y": 0.32942
     },
     {
-      "id": "ceka-60",
-      "code": "60",
-      "name": "Čeka 60",
+      "id": "ceka-37",
+      "code": "37",
+      "name": "Čeka 37",
       "type": "hunting",
-      "x": 0.58577,
-      "y": 0.48722
+      "x": 0.38383,
+      "y": 0.3929
     },
     {
-      "id": "ceka-65",
-      "code": "65",
-      "name": "Čeka 65",
+      "id": "ceka-38",
+      "code": "38",
+      "name": "Čeka 38",
       "type": "hunting",
-      "x": 0.78775,
-      "y": 0.66318
-    },
-    {
-      "id": "ceka-39",
-      "code": "39",
-      "name": "Čeka 39",
-      "type": "hunting",
-      "x": 0.42322,
-      "y": 0.49439
-    },
-    {
-      "id": "ceka-50",
-      "code": "50",
-      "name": "Čeka 50",
-      "type": "hunting",
-      "x": 0.51787,
-      "y": 0.34056
-    },
-    {
-      "id": "ceka-57",
-      "code": "57",
-      "name": "Čeka 57",
-      "type": "hunting",
-      "x": 0.54251,
-      "y": 0.43145
-    },
-    {
-      "id": "ceka-67",
-      "code": "67",
-      "name": "Čeka 67",
-      "type": "hunting",
-      "x": 0.79124,
-      "y": 0.5672
-    },
-    {
-      "id": "ceka-51",
-      "code": "51",
-      "name": "Čeka 51",
-      "type": "hunting",
-      "x": 0.54146,
-      "y": 0.32217
-    },
-    {
-      "id": "ceka-59",
-      "code": "59",
-      "name": "Čeka 59",
-      "type": "hunting",
-      "x": 0.54262,
-      "y": 0.47795
+      "x": 0.42582,
+      "y": 0.37109
     },
     {
       "id": "ceka-38a",
       "code": "38A",
       "name": "Čeka 38A",
       "type": "hunting",
-      "x": 0.37955,
-      "y": 0.49051
+      "x": 0.3815,
+      "y": 0.48714
     },
     {
-      "id": "hraniliste-90-169",
-      "code": "90/169",
-      "name": "Hranilište 90/169",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.20558,
-      "y": 0.34699
+      "id": "ceka-39",
+      "code": "39",
+      "name": "Čeka 39",
+      "type": "hunting",
+      "x": 0.42522,
+      "y": 0.49133
     },
     {
-      "id": "hraniliste-104-173",
-      "code": "104/173",
-      "name": "Hranilište 104/173",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.20823,
-      "y": 0.22993
+      "id": "ceka-40",
+      "code": "40",
+      "name": "Čeka 40",
+      "type": "hunting",
+      "x": 0.42542,
+      "y": 0.53468
     },
     {
-      "id": "hraniliste-103",
-      "code": "103",
-      "name": "Hranilište 103",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.29357,
-      "y": 0.33877
+      "id": "ceka-41",
+      "code": "41",
+      "name": "Čeka 41",
+      "type": "hunting",
+      "x": 0.46845,
+      "y": 0.53943
     },
     {
-      "id": "hraniliste-102-155",
-      "code": "102/155",
-      "name": "Hranilište 102/155",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.34898,
-      "y": 0.33219
+      "id": "ceka-42",
+      "code": "42",
+      "name": "Čeka 42",
+      "type": "hunting",
+      "x": 0.50198,
+      "y": 0.57494
     },
     {
-      "id": "hraniliste-84-156",
-      "code": "84/156",
-      "name": "Hranilište 84/156",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.41064,
-      "y": 0.21902
+      "id": "ceka-43",
+      "code": "43",
+      "name": "Čeka 43",
+      "type": "hunting",
+      "x": 0.4731,
+      "y": 0.59228
     },
     {
-      "id": "hraniliste-83",
-      "code": "83",
-      "name": "Hranilište 83",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.38124,
-      "y": 0.30707
+      "id": "ceka-44",
+      "code": "44",
+      "name": "Čeka 44",
+      "type": "hunting",
+      "x": 0.44293,
+      "y": 0.65045
     },
     {
-      "id": "hraniliste-80-151",
-      "code": "80/151",
-      "name": "Hranilište 80/151",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.26385,
-      "y": 0.16071
+      "id": "ceka-45",
+      "code": "45",
+      "name": "Čeka 45",
+      "type": "hunting",
+      "x": 0.47923,
+      "y": 0.65968
     },
     {
-      "id": "hraniliste-94",
-      "code": "94",
-      "name": "Hranilište 94",
+      "id": "ceka-46",
+      "code": "46",
+      "name": "Čeka 46",
+      "type": "hunting",
+      "x": 0.44481,
+      "y": 0.69183
+    },
+    {
+      "id": "ceka-48",
+      "code": "48",
+      "name": "Čeka 48",
+      "type": "hunting",
+      "x": 0.46123,
+      "y": 0.30621
+    },
+    {
+      "id": "ceka-49",
+      "code": "49",
+      "name": "Čeka 49",
+      "type": "hunting",
+      "x": 0.49011,
+      "y": 0.32662
+    },
+    {
+      "id": "ceka-50",
+      "code": "50",
+      "name": "Čeka 50",
+      "type": "hunting",
+      "x": 0.51978,
+      "y": 0.33753
+    },
+    {
+      "id": "ceka-51",
+      "code": "51",
+      "name": "Čeka 51",
+      "type": "hunting",
+      "x": 0.54332,
+      "y": 0.31907
+    },
+    {
+      "id": "ceka-52",
+      "code": "52",
+      "name": "Čeka 52",
+      "type": "hunting",
+      "x": 0.5815,
+      "y": 0.3406
+    },
+    {
+      "id": "ceka-53",
+      "code": "53",
+      "name": "Čeka 53",
+      "type": "hunting",
+      "x": 0.59416,
+      "y": 0.32942
+    },
+    {
+      "id": "ceka-54",
+      "code": "54",
+      "name": "Čeka 54",
+      "type": "hunting",
+      "x": 0.61563,
+      "y": 0.39038
+    },
+    {
+      "id": "ceka-55",
+      "code": "55",
+      "name": "Čeka 55",
+      "type": "hunting",
+      "x": 0.55381,
+      "y": 0.37696
+    },
+    {
+      "id": "ceka-56",
+      "code": "56",
+      "name": "Čeka 56",
+      "type": "hunting",
+      "x": 0.57953,
+      "y": 0.41135
+    },
+    {
+      "id": "ceka-57",
+      "code": "57",
+      "name": "Čeka 57",
+      "type": "hunting",
+      "x": 0.54441,
+      "y": 0.42813
+    },
+    {
+      "id": "ceka-58",
+      "code": "58",
+      "name": "Čeka 58",
+      "type": "hunting",
+      "x": 0.49268,
+      "y": 0.42254
+    },
+    {
+      "id": "ceka-59",
+      "code": "59",
+      "name": "Čeka 59",
+      "type": "hunting",
+      "x": 0.54461,
+      "y": 0.47483
+    },
+    {
+      "id": "ceka-60",
+      "code": "60",
+      "name": "Čeka 60",
+      "type": "hunting",
+      "x": 0.58764,
+      "y": 0.48406
+    },
+    {
+      "id": "ceka-61",
+      "code": "61",
+      "name": "Čeka 61",
+      "type": "hunting",
+      "x": 0.70831,
+      "y": 0.50447
+    },
+    {
+      "id": "ceka-61a",
+      "code": "61A",
+      "name": "Čeka 61A",
+      "type": "hunting",
+      "x": 0.68932,
+      "y": 0.63758
+    },
+    {
+      "id": "ceka-62",
+      "code": "62",
+      "name": "Čeka 62",
+      "type": "hunting",
+      "x": 0.61296,
+      "y": 0.77601
+    },
+    {
+      "id": "ceka-64",
+      "code": "64",
+      "name": "Čeka 64",
+      "type": "hunting",
+      "x": 0.63037,
+      "y": 0.81292
+    },
+    {
+      "id": "ceka-65",
+      "code": "65",
+      "name": "Čeka 65",
+      "type": "hunting",
+      "x": 0.79832,
+      "y": 0.66848
+    },
+    {
+      "id": "ceka-66",
+      "code": "66",
+      "name": "Čeka 66",
+      "type": "hunting",
+      "x": 0.81652,
+      "y": 0.57858
+    },
+    {
+      "id": "ceka-68",
+      "code": "68",
+      "name": "Čeka 68",
+      "type": "hunting",
+      "x": 0.7818,
+      "y": 0.53132
+    },
+    {
+      "id": "ceka-69",
+      "code": "69",
+      "name": "Čeka 69",
+      "type": "hunting",
+      "x": 0.76924,
+      "y": 0.43848
+    },
+    {
+      "id": "ceka-70",
+      "code": "70",
+      "name": "Čeka 70",
+      "type": "hunting",
+      "x": 0.81612,
+      "y": 0.49385
+    },
+    {
+      "id": "ceka-71",
+      "code": "71",
+      "name": "Čeka 71",
+      "type": "hunting",
+      "x": 0.845,
+      "y": 0.49888
+    },
+    {
+      "id": "ceka-72",
+      "code": "72",
+      "name": "Čeka 72",
+      "type": "hunting",
+      "x": 0.83521,
+      "y": 0.53691
+    },
+    {
+      "id": "hraniliste-100-161",
+      "code": "100/161",
+      "name": "Hranilište 100/161",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.44575,
-      "y": 0.48438
+      "x": 0.54026,
+      "y": 0.39653,
+      "feedingKind": "large"
     },
     {
       "id": "hraniliste-101-177",
       "code": "101/177",
       "name": "Hranilište 101/177",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.69025,
-      "y": 0.4926
+      "x": 0.67596,
+      "y": 0.50587,
+      "feedingKind": "large"
     },
     {
-      "id": "hraniliste-96",
-      "code": "96",
-      "name": "Hranilište 96",
+      "id": "hraniliste-102-155",
+      "code": "102/155",
+      "name": "Hranilište 102/155",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.27845,
-      "y": 0.2084
+      "x": 0.35094,
+      "y": 0.33221,
+      "feedingKind": "large"
     },
     {
-      "id": "hraniliste-85-150",
-      "code": "85/150",
-      "name": "Hranilište 85/150",
+      "id": "hraniliste-103",
+      "code": "103",
+      "name": "Hranilište 103",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.45823,
-      "y": 0.61265
+      "x": 0.29555,
+      "y": 0.33893,
+      "feedingKind": "large"
     },
     {
-      "id": "hraniliste-98-157",
-      "code": "98/157",
-      "name": "Hranilište 98/157",
+      "id": "hraniliste-104-173",
+      "code": "104/173",
+      "name": "Hranilište 104/173",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.6434,
-      "y": 0.79235
+      "x": 0.21296,
+      "y": 0.23266,
+      "feedingKind": "small"
     },
     {
-      "id": "hraniliste-81-153",
-      "code": "81/153",
-      "name": "Hranilište 81/153",
+      "id": "hraniliste-105",
+      "code": "105",
+      "name": "Hranilište 105",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.31525,
-      "y": 0.29705
+      "x": 0.26805,
+      "y": 0.18261,
+      "feedingKind": "large"
     },
     {
-      "id": "hraniliste-82-154",
-      "code": "82/154",
-      "name": "Hranilište 82/154",
+      "id": "hraniliste-105-173",
+      "code": "105/173",
+      "name": "Hranilište 105/173",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.32868,
-      "y": 0.30453
+      "x": 0.32483,
+      "y": 0.35095,
+      "feedingKind": "large"
     },
     {
-      "id": "hraniliste-87-158",
-      "code": "87/158",
-      "name": "Hranilište 87/158",
+      "id": "hraniliste-106",
+      "code": "106",
+      "name": "Hranilište 106",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.41381,
-      "y": 0.30602
+      "x": 0.39773,
+      "y": 0.27209,
+      "feedingKind": "large"
     },
     {
-      "id": "hraniliste-95",
-      "code": "95",
-      "name": "Hranilište 95",
+      "id": "hraniliste-107",
+      "code": "107",
+      "name": "Hranilište 107",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.81007,
-      "y": 0.59351
-    },
-    {
-      "id": "hraniliste-86-175",
-      "code": "86/175",
-      "name": "Hranilište 86/175",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.84602,
-      "y": 0.53685
-    },
-    {
-      "id": "hraniliste-123",
-      "code": "123",
-      "name": "Hranilište 123",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.21701,
-      "y": 0.1951
-    },
-    {
-      "id": "hraniliste-92-162",
-      "code": "92/162",
-      "name": "Hranilište 92/162",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.49905,
-      "y": 0.32367
-    },
-    {
-      "id": "hraniliste-131",
-      "code": "131",
-      "name": "Hranilište 131",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.78966,
-      "y": 0.46808
-    },
-    {
-      "id": "hraniliste-138-170",
-      "code": "138/170",
-      "name": "Hranilište 138/170",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.28257,
-      "y": 0.24727
-    },
-    {
-      "id": "hraniliste-132",
-      "code": "132",
-      "name": "Hranilište 132",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.296,
-      "y": 0.40903
-    },
-    {
-      "id": "hraniliste-137",
-      "code": "137",
-      "name": "Hranilište 137",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.41815,
-      "y": 0.41052
-    },
-    {
-      "id": "hraniliste-93-171",
-      "code": "93/171",
-      "name": "Hranilište 93/171",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.26851,
-      "y": 0.28749
-    },
-    {
-      "id": "hraniliste-135",
-      "code": "135",
-      "name": "Hranilište 135",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.61305,
-      "y": 0.46674
-    },
-    {
-      "id": "hraniliste-136-176",
-      "code": "136/176",
-      "name": "Hranilište 136/176",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.82466,
-      "y": 0.48393
-    },
-    {
-      "id": "hraniliste-143",
-      "code": "143",
-      "name": "Hranilište 143",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.54896,
-      "y": 0.78547
-    },
-    {
-      "id": "hraniliste-142",
-      "code": "142",
-      "name": "Hranilište 142",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.66476,
-      "y": 0.52863
-    },
-    {
-      "id": "hraniliste-128",
-      "code": "128",
-      "name": "Hranilište 128",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.21796,
-      "y": 0.53282
-    },
-    {
-      "id": "hraniliste-130",
-      "code": "130",
-      "name": "Hranilište 130",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.53109,
-      "y": 0.45717
-    },
-    {
-      "id": "hraniliste-112",
-      "code": "112",
-      "name": "Hranilište 112",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.23615,
-      "y": 0.60966
-    },
-    {
-      "id": "hraniliste-116",
-      "code": "116",
-      "name": "Hranilište 116",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.27253,
-      "y": 0.67917
-    },
-    {
-      "id": "hraniliste-118",
-      "code": "118",
-      "name": "Hranilište 118",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.43422,
-      "y": 0.51816
+      "x": 0.23937,
+      "y": 0.47763,
+      "feedingKind": "large"
     },
     {
       "id": "hraniliste-110",
       "code": "110",
       "name": "Hranilište 110",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.22462,
-      "y": 0.67409
+      "x": 0.22324,
+      "y": 0.67534,
+      "feedingKind": "small"
     },
     {
       "id": "hraniliste-111",
       "code": "111",
       "name": "Hranilište 111",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.17429,
-      "y": 0.41519
+      "x": 0.18081,
+      "y": 0.41723,
+      "feedingKind": "small"
     },
     {
-      "id": "hraniliste-124",
-      "code": "124",
-      "name": "Hranilište 124",
+      "id": "hraniliste-112",
+      "code": "112",
+      "name": "Hranilište 112",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.23429,
-      "y": 0.41141
+      "x": 0.23472,
+      "y": 0.61102,
+      "feedingKind": "small"
     },
     {
-      "id": "hraniliste-141",
-      "code": "141",
-      "name": "Hranilište 141",
+      "id": "hraniliste-113",
+      "code": "113",
+      "name": "Hranilište 113",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.07143,
-      "y": 0.4682
-    },
-    {
-      "id": "hraniliste-120",
-      "code": "120",
-      "name": "Hranilište 120",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.37857,
-      "y": 0.09672
-    },
-    {
-      "id": "hraniliste-174",
-      "code": "174",
-      "name": "Hranilište 174",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.40429,
-      "y": 0.34084
-    },
-    {
-      "id": "hraniliste-119-152",
-      "code": "119/152",
-      "name": "Hranilište 119/152",
-      "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.47321,
-      "y": 0.40636
-    },
-    {
-      "id": "hraniliste-115",
-      "code": "115",
-      "name": "Hranilište 115",
-      "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.51786,
-      "y": 0.62746
+      "x": 0.54698,
+      "y": 0.78859,
+      "feedingKind": "small"
     },
     {
       "id": "hraniliste-114-165",
       "code": "114/165",
       "name": "Hranilište 114/165",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.64464,
-      "y": 0.67239
+      "x": 0.67161,
+      "y": 0.67086,
+      "feedingKind": "large"
     },
     {
-      "id": "hraniliste-117",
-      "code": "117",
-      "name": "Hranilište 117",
+      "id": "hraniliste-115",
+      "code": "115",
+      "name": "Hranilište 115",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.37607,
-      "y": 0.36093
+      "x": 0.48229,
+      "y": 0.62891,
+      "feedingKind": "small"
     },
     {
-      "id": "hraniliste-127",
-      "code": "127",
-      "name": "Hranilište 127",
+      "id": "hraniliste-116",
+      "code": "116",
+      "name": "Hranilište 116",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.4125,
-      "y": 0.38364
+      "x": 0.27112,
+      "y": 0.68037,
+      "feedingKind": "small"
     },
     {
-      "id": "hraniliste-139",
-      "code": "139",
-      "name": "Hranilište 139",
+      "id": "hraniliste-118",
+      "code": "118",
+      "name": "Hranilište 118",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.46107,
-      "y": 0.36093
+      "x": 0.43294,
+      "y": 0.51985,
+      "feedingKind": "small"
     },
     {
-      "id": "hraniliste-129",
-      "code": "129",
-      "name": "Hranilište 129",
+      "id": "hraniliste-119-152",
+      "code": "119/152",
+      "name": "Hranilište 119/152",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.4975,
-      "y": 0.42908
+      "x": 0.46449,
+      "y": 0.40772,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-120",
+      "code": "120",
+      "name": "Hranilište 120",
+      "type": "feeding",
+      "x": 0.32948,
+      "y": 0.19715,
+      "feedingKind": "small"
     },
     {
       "id": "hraniliste-121",
       "code": "121",
       "name": "Hranilište 121",
       "type": "feeding",
-      "feedingKind": "small",
-      "x": 0.51571,
-      "y": 0.47451
+      "x": 0.43373,
+      "y": 0.47819,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-122",
+      "code": "122",
+      "name": "Hranilište 122",
+      "type": "feeding",
+      "x": 0.42235,
+      "y": 0.67645,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-123",
+      "code": "123",
+      "name": "Hranilište 123",
+      "type": "feeding",
+      "x": 0.21573,
+      "y": 0.19715,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-124",
+      "code": "124",
+      "name": "Hranilište 124",
+      "type": "feeding",
+      "x": 0.24303,
+      "y": 0.41023,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-125",
+      "code": "125",
+      "name": "Hranilište 125",
+      "type": "feeding",
+      "x": 0.46617,
+      "y": 0.49413,
+      "feedingKind": "small"
     },
     {
       "id": "hraniliste-126-164",
       "code": "126/164",
       "name": "Hranilište 126/164",
       "type": "feeding",
-      "feedingKind": "large",
-      "x": 0.14286,
-      "y": 0.48713
+      "x": 0.08348,
+      "y": 0.59508,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-127",
+      "code": "127",
+      "name": "Hranilište 127",
+      "type": "feeding",
+      "x": 0.41929,
+      "y": 0.39989,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-129",
+      "code": "129",
+      "name": "Hranilište 129",
+      "type": "feeding",
+      "x": 0.38586,
+      "y": 0.46812,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-130",
+      "code": "130",
+      "name": "Hranilište 130",
+      "type": "feeding",
+      "x": 0.53225,
+      "y": 0.45889,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-131",
+      "code": "131",
+      "name": "Hranilište 131",
+      "type": "feeding",
+      "x": 0.79174,
+      "y": 0.47343,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-132",
+      "code": "132",
+      "name": "Hranilište 132",
+      "type": "feeding",
+      "x": 0.30406,
+      "y": 0.40996,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-133",
+      "code": "133",
+      "name": "Hranilište 133",
+      "type": "feeding",
+      "x": 0.62671,
+      "y": 0.51622,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-134",
+      "code": "134",
+      "name": "Hranilište 134",
+      "type": "feeding",
+      "x": 0.56261,
+      "y": 0.50587,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-135",
+      "code": "135",
+      "name": "Hranilište 135",
+      "type": "feeding",
+      "x": 0.61405,
+      "y": 0.4684,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-136-176",
+      "code": "136/176",
+      "name": "Hranilište 136/176",
+      "type": "feeding",
+      "x": 0.82948,
+      "y": 0.48714,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-137",
+      "code": "137",
+      "name": "Hranilište 137",
+      "type": "feeding",
+      "x": 0.41592,
+      "y": 0.41051,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-138-170",
+      "code": "138/170",
+      "name": "Hranilište 138/170",
+      "type": "feeding",
+      "x": 0.29367,
+      "y": 0.2514,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-139",
+      "code": "139",
+      "name": "Hranilište 139",
+      "type": "feeding",
+      "x": 0.42997,
+      "y": 0.39905,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-141",
+      "code": "141",
+      "name": "Hranilište 141",
+      "type": "feeding",
+      "x": 0.07715,
+      "y": 0.46784,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-142",
+      "code": "142",
+      "name": "Hranilište 142",
+      "type": "feeding",
+      "x": 0.6633,
+      "y": 0.5302,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-143",
+      "code": "143",
+      "name": "Hranilište 143",
+      "type": "feeding",
+      "x": 0.60702,
+      "y": 0.78887,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-159",
+      "code": "159",
+      "name": "Hranilište 159",
+      "type": "feeding",
+      "x": 0.56103,
+      "y": 0.41359,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-174",
+      "code": "174",
+      "name": "Hranilište 174",
+      "type": "feeding",
+      "x": 0.35776,
+      "y": 0.35347,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-80-151",
+      "code": "80/151",
+      "name": "Hranilište 80/151",
+      "type": "feeding",
+      "x": 0.26578,
+      "y": 0.16107,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-81-153",
+      "code": "81/153",
+      "name": "Hranilište 81/153",
+      "type": "feeding",
+      "x": 0.31711,
+      "y": 0.29698,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-82-154",
+      "code": "82/154",
+      "name": "Hranilište 82/154",
+      "type": "feeding",
+      "x": 0.33056,
+      "y": 0.30453,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-83",
+      "code": "83",
+      "name": "Hranilište 83",
+      "type": "feeding",
+      "x": 0.38318,
+      "y": 0.30705,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-84-156",
+      "code": "84/156",
+      "name": "Hranilište 84/156",
+      "type": "feeding",
+      "x": 0.39486,
+      "y": 0.22092,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-85-150",
+      "code": "85/150",
+      "name": "Hranilište 85/150",
+      "type": "feeding",
+      "x": 0.48477,
+      "y": 0.57564,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-86-175",
+      "code": "86/175",
+      "name": "Hranilište 86/175",
+      "type": "feeding",
+      "x": 0.84787,
+      "y": 0.53663,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-87-158",
+      "code": "87/158",
+      "name": "Hranilište 87/158",
+      "type": "feeding",
+      "x": 0.41583,
+      "y": 0.30593,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-88-160",
+      "code": "88/160",
+      "name": "Hranilište 88/160",
+      "type": "feeding",
+      "x": 0.53591,
+      "y": 0.43848,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-90-169",
+      "code": "90/169",
+      "name": "Hranilište 90/169",
+      "type": "feeding",
+      "x": 0.22305,
+      "y": 0.35864,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-91-163",
+      "code": "91/163",
+      "name": "Hranilište 91/163",
+      "type": "feeding",
+      "x": 0.58081,
+      "y": 0.36577,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-92-162",
+      "code": "92/162",
+      "name": "Hranilište 92/162",
+      "type": "feeding",
+      "x": 0.50099,
+      "y": 0.32383,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-93-171",
+      "code": "93/171",
+      "name": "Hranilište 93/171",
+      "type": "feeding",
+      "x": 0.26291,
+      "y": 0.28384,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-94",
+      "code": "94",
+      "name": "Hranilište 94",
+      "type": "feeding",
+      "x": 0.47834,
+      "y": 0.53468,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-95",
+      "code": "95",
+      "name": "Hranilište 95",
+      "type": "feeding",
+      "x": 0.81197,
+      "y": 0.5934,
+      "feedingKind": "large"
+    },
+    {
+      "id": "hraniliste-96",
+      "code": "96",
+      "name": "Hranilište 96",
+      "type": "feeding",
+      "x": 0.28071,
+      "y": 0.21365,
+      "feedingKind": "small"
+    },
+    {
+      "id": "hraniliste-98-157",
+      "code": "98/157",
+      "name": "Hranilište 98/157",
+      "type": "feeding",
+      "x": 0.64975,
+      "y": 0.81264,
+      "feedingKind": "large"
     }
   ]
 }

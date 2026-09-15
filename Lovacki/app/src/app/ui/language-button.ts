@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
-import { AppLang } from '../core/models';
+import { AppLang } from '../domain';
 
 @Component({
   selector: 'app-language-button',

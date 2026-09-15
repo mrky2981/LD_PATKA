@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { ClubService } from '../core/club';
+import { ClubFacade } from '../application/club-facade';
 import { InstallService } from '../core/install';
 import { ShortcutDialog } from '../ui/shortcut-dialog';
 
@@ -113,7 +113,7 @@ import { ShortcutDialog } from '../ui/shortcut-dialog';
   `,
 })
 export class ShellPage {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly install = inject(InstallService);
   readonly s = this.club.strings;
 }

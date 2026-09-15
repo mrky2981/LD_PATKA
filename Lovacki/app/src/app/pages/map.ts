@@ -3,25 +3,30 @@ import {
   Component,
   DestroyRef,
   ElementRef,
+  afterEveryRender,
   afterNextRender,
   computed,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
-import { ClubService } from '../core/club';
+import { ClubFacade } from '../application/club-facade';
 import { InstallService } from '../core/install';
 import { downloadMarkedMap } from '../core/map-export';
-import { Stand, availableCount, isFeeding, isLargeFeeding, isSmallFeeding, isTaken, takenCount } from '../core/models';
+import { PlaceType, Stand, availableCount, hasMapPosition, isAutomaticFeeding, isFeeding, isLargeFeeding, isSmallFeeding, isTaken, mapPinKind, takenCount } from '../core/models';
 import { LanguageButton } from '../ui/language-button';
 import { AddStandDialog } from '../ui/add-stand-dialog';
 import { StandSheet } from '../ui/stand-sheet';
 
 const ZOOM_RANGE = 8;
+const VIEW_MAP_FILE = 'map_loviste_view.webp';
+const VIEW_MAP_WIDTH = 2560;
+const VIEW_MAP_HEIGHT = 1811;
+const INTERACT_IDLE_MS = 140;
 
 interface PinView {
   stand: Stand;
-  kind: 'hunting' | 'large' | 'small';
+  kind: 'hunting' | 'large' | 'small' | 'automatic';
   taken: boolean;
 }
 
@@ -33,13 +38,15 @@ interface PinView {
   styleUrl: './map.scss',
 })
 export class MapPage {
-  readonly club = inject(ClubService);
+  readonly club = inject(ClubFacade);
   readonly install = inject(InstallService);
   readonly viewport = viewChild.required<ElementRef<HTMLElement>>('viewport');
   readonly stage = viewChild.required<ElementRef<HTMLElement>>('stage');
+  readonly pinsLayer = viewChild.required<ElementRef<HTMLElement>>('pinsLayer');
+  readonly viewMapFile = VIEW_MAP_FILE;
   readonly s = this.club.strings;
   readonly state = this.club.state;
-  readonly placeType = signal<string | null>(null);
+  readonly placeType = signal<PlaceType | null>(null);
   readonly pending = signal<{ x: number; y: number } | null>(null);
   readonly selected = signal<Stand | null>(null);
   readonly highlightedId = signal<string | null>(null);
@@ -47,6 +54,7 @@ export class MapPage {
   readonly showTaken = signal(true);
   readonly showFeedLarge = signal(true);
   readonly showFeedSmall = signal(true);
+  readonly showFeedAuto = signal(true);
   readonly legendOpen = signal(false);
   readonly size = signal({ w: 1, h: 1 });
   readonly exporting = signal(false);
@@ -60,6 +68,7 @@ export class MapPage {
   private liveX = 0;
   private liveY = 0;
   private paintQueued = 0;
+  private interactTimer = 0;
 
   readonly catalog = computed(() => this.state().catalog);
   readonly fitted = computed(() => {
@@ -68,7 +77,7 @@ export class MapPage {
       const { w, h } = this.size();
       return { baseW: w, baseH: h };
     }
-    return { baseW: catalog.map.width, baseH: catalog.map.height };
+    return { baseW: VIEW_MAP_WIDTH, baseH: VIEW_MAP_HEIGHT };
   });
   readonly pins = computed(() => {
     const catalog = this.catalog();
@@ -78,12 +87,21 @@ export class MapPage {
     const state = this.state();
     const highlight = this.highlightedId();
     return catalog.stands.filter((stand) => {
+      if (!hasMapPosition(stand) && stand.id !== highlight) {
+        return false;
+      }
       if (stand.id === highlight) {
-        return true;
+        return hasMapPosition(stand);
       }
       const taken = isTaken(state, stand.id);
+      if (isAutomaticFeeding(stand)) {
+        return this.showFeedAuto();
+      }
       if (isSmallFeeding(stand)) {
         return this.showFeedSmall();
+      }
+      if (isLargeFeeding(stand)) {
+        return this.showFeedLarge();
       }
       if (isFeeding(stand)) {
         return this.showFeedLarge();
@@ -95,7 +113,7 @@ export class MapPage {
     const state = this.state();
     return this.pins().map((stand) => ({
       stand,
-      kind: isSmallFeeding(stand) ? 'small' : isFeeding(stand) ? 'large' : 'hunting',
+      kind: mapPinKind(stand) ?? 'hunting',
       taken: isTaken(state, stand.id),
     }));
   });
@@ -107,12 +125,21 @@ export class MapPage {
   readonly feedingSmallCount = computed(
     () => this.state().catalog?.stands.filter(isSmallFeeding).length ?? 0,
   );
+  readonly feedingAutoCount = computed(
+    () => this.state().catalog?.stands.filter(isAutomaticFeeding).length ?? 0,
+  );
   constructor() {
     const destroy = inject(DestroyRef);
     destroy.onDestroy(() => {
       if (this.paintQueued) {
         cancelAnimationFrame(this.paintQueued);
       }
+      if (this.interactTimer) {
+        clearTimeout(this.interactTimer);
+      }
+    });
+    afterEveryRender(() => {
+      this.queuePaint();
     });
     afterNextRender(() => {
       this.measure();
@@ -203,6 +230,7 @@ export class MapPage {
 
   onWheel(event: WheelEvent): void {
     event.preventDefault();
+    this.markInteracting();
     const factor = event.deltaY > 0 ? 0.9 : 1.1;
     this.zoomAt({ x: event.clientX, y: event.clientY }, factor);
   }
@@ -251,8 +279,8 @@ export class MapPage {
     const strings = this.s();
     try {
       await downloadMarkedMap({
-        imageSrc: 'map_loviste.jpg',
-        stands: catalog.stands,
+        imageSrc: catalog.map.file,
+        stands: catalog.stands.filter(hasMapPosition),
         takenIds: new Set(
           catalog.stands.filter((stand) => !isFeeding(stand) && isTaken(state, stand.id)).map((stand) => stand.id),
         ),
@@ -283,10 +311,10 @@ export class MapPage {
     const views = this.pinViews();
     for (let i = views.length - 1; i >= 0; i--) {
       const pin = views[i];
-      const dx = (pt.x - pin.stand.x) * baseW * zoom;
-      const dy = (pt.y - pin.stand.y) * baseH * zoom;
-      const half = pin.kind === 'small' ? 20 : pin.kind === 'large' ? 15 : 17;
-      const height = pin.kind === 'small' ? 28 : pin.kind === 'large' ? 32 : 46;
+      const dx = (pt.x - (pin.stand.x ?? 0)) * baseW * zoom;
+      const dy = (pt.y - (pin.stand.y ?? 0)) * baseH * zoom;
+      const half = pin.kind === 'small' ? 20 : pin.kind === 'automatic' ? 16 : pin.kind === 'large' ? 15 : 17;
+      const height = pin.kind === 'small' ? 28 : pin.kind === 'automatic' ? 34 : pin.kind === 'large' ? 32 : 46;
       if (dx >= -half && dx <= half && dy >= -height && dy <= 6) {
         return pin.stand;
       }
@@ -316,13 +344,16 @@ export class MapPage {
   }
 
   private focus(stand: Stand): void {
+    if (!hasMapPosition(stand)) {
+      return;
+    }
     this.highlightedId.set(stand.id);
     const target = clamp(this.minScale() * 3.4, this.minScale(), this.maxScale());
     const { baseW, baseH } = this.fitted();
     const { w, h } = this.size();
     this.setView(target, {
-      x: w / 2 - stand.x * baseW * target,
-      y: h / 2 - stand.y * baseH * target,
+      x: w / 2 - stand.x! * baseW * target,
+      y: h / 2 - stand.y! * baseH * target,
     });
   }
 
@@ -388,6 +419,19 @@ export class MapPage {
     this.viewport().nativeElement.classList.toggle('panning', active);
   }
 
+  private markInteracting(): void {
+    this.setPanning(true);
+    if (this.interactTimer) {
+      clearTimeout(this.interactTimer);
+    }
+    this.interactTimer = window.setTimeout(() => {
+      this.interactTimer = 0;
+      if (this.pointers.size === 0) {
+        this.setPanning(false);
+      }
+    }, INTERACT_IDLE_MS);
+  }
+
   private setView(scale: number, pan: { x: number; y: number }): void {
     const next = this.clamp(pan, scale);
     this.liveScale = scale;
@@ -402,10 +446,23 @@ export class MapPage {
     }
     this.paintQueued = requestAnimationFrame(() => {
       this.paintQueued = 0;
-      const el = this.stage().nativeElement;
-      el.style.transform = `translate3d(${this.liveX}px, ${this.liveY}px, 0) scale(${this.liveScale})`;
-      el.style.setProperty('--map-zoom', String(this.liveScale));
-      el.style.setProperty('--pin-scale', String(1 / Math.max(this.liveScale, 0.0001)));
+      const stage = this.stage()?.nativeElement;
+      const pins = this.pinsLayer()?.nativeElement;
+      if (!stage || !pins) {
+        return;
+      }
+      const { baseW, baseH } = this.fitted();
+      const x = this.liveX;
+      const y = this.liveY;
+      const scale = this.liveScale;
+      stage.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${scale})`;
+      const nodes = pins.children;
+      for (let i = 0; i < nodes.length; i++) {
+        const el = nodes[i] as HTMLElement;
+        const px = Number(el.dataset['x'] || 0);
+        const py = Number(el.dataset['y'] || 0);
+        el.style.transform = `translate3d(${x + px * baseW * scale}px, ${y + py * baseH * scale}px, 0)`;
+      }
     });
   }
 

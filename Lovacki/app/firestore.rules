@@ -1,0 +1,55 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+    function memberPath() {
+      return /databases/$(database)/documents/clubs/patka/members/$(request.auth.uid);
+    }
+    function isAdmin() {
+      return signedIn() && exists(memberPath()) && get(memberPath()).data.role == 'ADMIN';
+    }
+    function isKeeper() {
+      return signedIn() && exists(memberPath()) && get(memberPath()).data.status == 'KEEPER';
+    }
+    function canBookGuests() {
+      return isAdmin() || isKeeper();
+    }
+
+    match /clubs/patka {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+
+      match /stands/{id} {
+        allow read: if signedIn();
+        allow write: if isAdmin();
+      }
+      match /members/{id} {
+        allow read: if signedIn();
+        allow create: if signedIn() && request.auth.uid == id;
+        allow update: if signedIn() && (request.auth.uid == id || isAdmin());
+        allow delete: if isAdmin();
+      }
+      match /occupancies/{id} {
+        allow read: if signedIn();
+        allow create, update: if signedIn();
+        allow delete: if signedIn();
+      }
+      match /sightings/{id} {
+        allow read: if signedIn();
+        allow create: if signedIn() && request.resource.data.hunterUserId == request.auth.uid;
+        allow update, delete: if signedIn() && resource.data.hunterUserId == request.auth.uid;
+      }
+      match /duckSignups/{id} {
+        allow read: if signedIn();
+        allow write: if signedIn();
+      }
+      match /claimEvents/{id} {
+        allow read: if signedIn();
+        allow create, update: if signedIn();
+        allow delete: if isAdmin();
+      }
+    }
+  }
+}
