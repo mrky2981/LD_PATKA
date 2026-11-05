@@ -57,6 +57,7 @@
             [class.feeding-small]="pin.kind === 'small'"
             [class.feeding-auto]="pin.kind === 'automatic'"
             [class.taken]="pin.taken"
+            [class.favorite]="pin.favorite"
             [class.highlight]="pin.stand.id === highlightedId()"
             [attr.data-x]="pin.stand.x ?? 0"
             [attr.data-y]="pin.stand.y ?? 0"
@@ -64,15 +65,9 @@
             <i class="tip"></i>
             <span class="mark">
               @if (pin.kind === 'small') {
-                <svg viewBox="0 0 36 22" aria-hidden="true">
-                  <path fill="currentColor" d="M2 4h18l8 14H2z" />
-                  <circle cx="30" cy="8" r="5" fill="#7cb342" />
-                </svg>
+                <img src="icons/hraniliste-sitna.svg?v=2" alt="" draggable="false" />
               } @else if (pin.kind === 'large') {
-                <svg viewBox="0 0 32 32" aria-hidden="true">
-                  <circle cx="16" cy="16" r="15" fill="currentColor" />
-                  <circle cx="16" cy="16" r="15" fill="none" stroke="#fff" stroke-width="2" />
-                </svg>
+                <img src="icons/hraniliste-krupna.svg?v=2" alt="" draggable="false" />
               } @else if (pin.kind === 'automatic') {
                 <svg viewBox="0 0 32 36" aria-hidden="true">
                   <path fill="currentColor" d="M8 10h16l3 8H5z" />
@@ -92,6 +87,9 @@
               }
               <span>{{ pin.stand.code }}</span>
             </span>
+            @if (pin.favorite) {
+              <b class="fav" aria-hidden="true">★</b>
+            }
           </div>
         }
     </div>
@@ -101,6 +99,7 @@
         @if (!legendOpen()) {
           <i class="dot free" [class.off]="!showFree()"></i>
           <i class="dot taken" [class.off]="!showTaken()"></i>
+          <i class="dot fav" [class.off]="!showFavorites()">★</i>
           <i class="dot feed-large" [class.off]="!showFeedLarge()"></i>
           <i class="dot feed-small" [class.off]="!showFeedSmall()"></i>
           @if (feedingAutoCount() > 0) {
@@ -119,6 +118,12 @@
         <button type="button" class="legend-row" [class.off]="!showTaken()" (click)="showTaken.set(!showTaken())">
           <span>{{ s().legendTaken }} · {{ taken() }}</span>
           @if (!showTaken()) {
+            <small>{{ s().legendHidden }}</small>
+          }
+        </button>
+        <button type="button" class="legend-row" [class.off]="!showFavorites()" (click)="showFavorites.set(!showFavorites())">
+          <span>{{ s().legendFavorites }} · {{ favoriteCount() }}</span>
+          @if (!showFavorites()) {
             <small>{{ s().legendHidden }}</small>
           }
         </button>

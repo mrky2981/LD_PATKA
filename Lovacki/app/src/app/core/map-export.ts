@@ -3,10 +3,10 @@ import { downloadBlob } from './file-download';
 
 const COLOR_FREE = '#43a047';
 const COLOR_TAKEN = '#e53935';
-const COLOR_FEED_LARGE = '#f4b400';
-const COLOR_FEED_SMALL = '#ef6c00';
 const COLOR_FEED_AUTO = '#00897b';
-const COLOR_SALT = '#7cb342';
+
+const LARGE_FEEDER = { src: 'icons/hraniliste-krupna.svg?v=2', aspect: 48 / 64 };
+const SMALL_FEEDER = { src: 'icons/hraniliste-sitna.svg?v=2', aspect: 36 / 18 };
 
 const HUNTING_PATHS = [
   'M16 1 29 13H3Z',
@@ -33,7 +33,11 @@ export async function downloadMarkedMap(options: {
   filename: string;
   labels: MapExportLabels;
 }): Promise<void> {
-  const image = await loadImage(options.imageSrc);
+  const [image, largeFeeder, smallFeeder] = await Promise.all([
+    loadImage(options.imageSrc),
+    loadImage(LARGE_FEEDER.src),
+    loadImage(SMALL_FEEDER.src),
+  ]);
   const scale = image.naturalWidth >= 2000 ? 1 : 2;
   const width = Math.round(image.naturalWidth * scale);
   const height = Math.round(image.naturalHeight * scale);
@@ -48,10 +52,10 @@ export async function downloadMarkedMap(options: {
   ctx.imageSmoothingQuality = 'high';
   ctx.drawImage(image, 0, 0, width, height);
 
-  const pinH = clamp(height * 0.03, 30, 58);
-  const largeH = pinH * 0.9;
-  const smallH = pinH * 0.7;
-  const autoH = pinH * 0.85;
+  const pinH = clamp(height * 0.0125, 48, 88);
+  const largeH = pinH * 0.95;
+  const smallH = pinH * 0.36;
+  const autoH = pinH * 0.82;
   for (const stand of options.stands) {
     if (!hasMapPosition(stand)) {
       continue;
@@ -63,18 +67,21 @@ export async function downloadMarkedMap(options: {
       continue;
     }
     if (isSmallFeeding(stand)) {
-      drawSmallFeedingPin(ctx, x, y, smallH, COLOR_FEED_SMALL, stand.code);
+      drawFeederPin(ctx, smallFeeder, SMALL_FEEDER.aspect, x, y, smallH, stand.code);
       continue;
     }
     if (isFeeding(stand)) {
-      drawLargeFeedingPin(ctx, x, y, largeH, COLOR_FEED_LARGE, stand.code);
+      drawFeederPin(ctx, largeFeeder, LARGE_FEEDER.aspect, x, y, largeH, stand.code);
       continue;
     }
     const color = options.takenIds.has(stand.id) ? COLOR_TAKEN : COLOR_FREE;
     drawHuntingPin(ctx, x, y, pinH, color, stand.code);
   }
 
-  drawLegend(ctx, width, height, options.labels);
+  drawLegend(ctx, width, height, options.labels, [
+    { image: largeFeeder, aspect: LARGE_FEEDER.aspect },
+    { image: smallFeeder, aspect: SMALL_FEEDER.aspect },
+  ]);
 
   const blob = await canvasToBlob(canvas);
   downloadBlob(blob, options.filename);
@@ -105,28 +112,20 @@ function drawHuntingPin(
   drawCode(ctx, cx, cy - h * 0.62, h * 0.28, code);
 }
 
-function drawLargeFeedingPin(
+function drawFeederPin(
   ctx: CanvasRenderingContext2D,
+  image: HTMLImageElement,
+  aspect: number,
   cx: number,
   cy: number,
-  h: number,
-  color: string,
+  height: number,
   code: string,
 ): void {
-  const s = h / 32;
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.scale(s, s);
-  ctx.translate(-16, -32);
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.arc(16, 16, 15, 0, Math.PI * 2);
-  ctx.fill();
-  ctx.strokeStyle = '#fff';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  ctx.restore();
-  drawCode(ctx, cx, cy - h * 0.5, h * 0.36, code);
+  const width = height * aspect;
+  ctx.drawImage(image, cx - width / 2, cy - height, width, height);
+  drawAnchorDot(ctx, cx, cy, Math.max(8, height * 0.18));
+  const font = Math.max(12, height * 0.24);
+  drawCode(ctx, cx, cy - height - font * 0.7, font, code);
 }
 
 function drawAutomaticFeedingPin(
@@ -160,31 +159,20 @@ function drawAutomaticFeedingPin(
   drawCode(ctx, cx, cy - h * 0.55, h * 0.32, code);
 }
 
-function drawSmallFeedingPin(
-  ctx: CanvasRenderingContext2D,
-  cx: number,
-  cy: number,
-  h: number,
-  color: string,
-  code: string,
-): void {
-  const s = h / 22;
+function drawAnchorDot(ctx: CanvasRenderingContext2D, cx: number, cy: number, diameter: number): void {
+  const radius = diameter / 2;
   ctx.save();
-  ctx.translate(cx, cy);
-  ctx.scale(s, s);
-  ctx.translate(-16, -22);
-  ctx.fillStyle = color;
-  ctx.strokeStyle = 'rgba(255,255,255,0.85)';
-  ctx.lineWidth = 0.7;
-  const trough = new Path2D('M2 4h18l8 14H2z');
-  ctx.fill(trough);
-  ctx.stroke(trough);
-  ctx.fillStyle = COLOR_SALT;
   ctx.beginPath();
-  ctx.arc(30, 8, 5, 0, Math.PI * 2);
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.fillStyle = '#f5a31a';
   ctx.fill();
+  ctx.lineWidth = Math.max(1.5, diameter * 0.18);
+  ctx.strokeStyle = '#fff';
+  ctx.stroke();
+  ctx.lineWidth = Math.max(1, diameter * 0.12);
+  ctx.strokeStyle = '#111';
+  ctx.stroke();
   ctx.restore();
-  drawCode(ctx, cx - h * 0.12, cy - h * 0.48, h * 0.32, code);
 }
 
 function drawCode(
@@ -213,10 +201,11 @@ function drawLegend(
   width: number,
   height: number,
   labels: MapExportLabels,
+  feeders: ReadonlyArray<{ image: HTMLImageElement; aspect: number }>,
 ): void {
   const pad = Math.max(12, width * 0.012);
   const unit = Math.max(12, width * 0.009);
-  const boxW = unit * 22;
+  const boxW = unit * 24;
   const boxH = unit * 9.6;
   const x = pad;
   const y = height - boxH - pad;
@@ -232,21 +221,27 @@ function drawLegend(
   ctx.font = `500 ${unit * 0.85}px system-ui, "Segoe UI", sans-serif`;
   ctx.fillStyle = 'rgba(244, 239, 228, 0.75)';
   ctx.fillText(labels.date, x + unit, y + unit * 2);
-  const rows: Array<[string, string]> = [
-    [COLOR_FREE, labels.free],
-    [COLOR_TAKEN, labels.taken],
-    [COLOR_FEED_LARGE, labels.feedLarge],
-    [COLOR_FEED_SMALL, labels.feedSmall],
+  const rows: Array<{ color?: string; image?: HTMLImageElement; aspect?: number; text: string }> = [
+    { color: COLOR_FREE, text: labels.free },
+    { color: COLOR_TAKEN, text: labels.taken },
+    { image: feeders[0]?.image, aspect: feeders[0]?.aspect, text: labels.feedLarge },
+    { image: feeders[1]?.image, aspect: feeders[1]?.aspect, text: labels.feedSmall },
   ];
-  rows.forEach(([color, text], index) => {
+  rows.forEach((row, index) => {
     const rowY = y + unit * 3.4 + index * unit * 1.45;
-    ctx.fillStyle = color;
-    ctx.beginPath();
-    ctx.arc(x + unit * 1.35, rowY + unit * 0.45, unit * 0.38, 0, Math.PI * 2);
-    ctx.fill();
+    if (row.image && row.aspect) {
+      const iconH = unit * 1.2;
+      const iconW = iconH * row.aspect;
+      ctx.drawImage(row.image, x + unit * 0.55, rowY - unit * 0.15, iconW, iconH);
+    } else if (row.color) {
+      ctx.fillStyle = row.color;
+      ctx.beginPath();
+      ctx.arc(x + unit * 1.35, rowY + unit * 0.45, unit * 0.38, 0, Math.PI * 2);
+      ctx.fill();
+    }
     ctx.fillStyle = '#f4efe4';
     ctx.font = `600 ${unit * 0.9}px system-ui, "Segoe UI", sans-serif`;
-    ctx.fillText(text, x + unit * 2.2, rowY);
+    ctx.fillText(row.text, x + unit * 3.5, rowY);
   });
   ctx.restore();
 }

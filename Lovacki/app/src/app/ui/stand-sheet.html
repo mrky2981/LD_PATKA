@@ -9,6 +9,11 @@
   @if (onMap()) {
     <button class="outline" type="button" (click)="showOnMap.emit()">{{ s().showOnMap }}</button>
   }
+  @if (canFavorite()) {
+    <button class="outline" type="button" (click)="club.toggleFavoriteStand(stand().id)">
+      {{ favorite() ? s().removeFavorite : s().addFavorite }}
+    </button>
+  }
 
   @if (canTake()) {
     <button class="available" type="button" (click)="club.takeStand(stand().id)">{{ s().takeStand }}</button>

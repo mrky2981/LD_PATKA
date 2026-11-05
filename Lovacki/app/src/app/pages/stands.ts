@@ -6,6 +6,7 @@ import {
   Stand,
   feedingKindColor,
   hasMapPosition,
+  isFavoriteStand,
   isFeeding,
   isHunting,
   isTaken,
@@ -17,7 +18,7 @@ import {
 import { DuckHuntSheet } from '../ui/duck-hunt-sheet';
 import { StandSheet } from '../ui/stand-sheet';
 
-type Filter = 'all' | 'available' | 'taken' | 'feeding';
+type Filter = 'all' | 'favorites' | 'available' | 'taken' | 'feeding';
 
 @Component({
   selector: 'app-stands',
@@ -43,6 +44,7 @@ export class StandsPage {
     const s = this.s();
     return [
       { id: 'all' as const, label: s.filterAll },
+      { id: 'favorites' as const, label: s.filterFavorites },
       { id: 'available' as const, label: s.filterAvailable },
       { id: 'taken' as const, label: s.filterTaken },
       { id: 'feeding' as const, label: s.filterFeeding },
@@ -54,6 +56,9 @@ export class StandsPage {
     const all = state.catalog?.stands ?? [];
     const filter = this.filter();
     const byFilter = all.filter((stand) => {
+      if (filter === 'favorites') {
+        return isHunting(stand) && isFavoriteStand(state.currentUser, stand.id);
+      }
       if (filter === 'available') {
         return isHunting(stand) && !isTaken(state, stand.id);
       }
@@ -66,19 +71,43 @@ export class StandsPage {
       return true;
     });
     const q = this.query().trim().toLowerCase();
-    if (!q) {
-      return byFilter;
+    const matched = q
+      ? byFilter.filter(
+          (stand) =>
+            stand.code.toLowerCase().includes(q) ||
+            stand.name.toLowerCase().includes(q) ||
+            standDisplayName(this.s(), stand.code, stand.type, stand.feedingKind).toLowerCase().includes(q),
+        )
+      : byFilter;
+    const favorites = matched.filter((stand) => isFavoriteStand(state.currentUser, stand.id));
+    if (filter === 'favorites' || favorites.length === 0) {
+      return matched;
     }
-    return byFilter.filter(
-      (stand) =>
-        stand.code.toLowerCase().includes(q) ||
-        stand.name.toLowerCase().includes(q) ||
-        standDisplayName(this.s(), stand.code, stand.type, stand.feedingKind).toLowerCase().includes(q),
-    );
+    const rest = matched.filter((stand) => !isFavoriteStand(state.currentUser, stand.id));
+    return [...favorites, ...rest];
+  });
+
+  readonly emptyMessage = computed(() => {
+    if (this.filter() === 'favorites' && !this.query().trim()) {
+      return this.s().favoritesEmpty;
+    }
+    return this.s().noSearchResults;
   });
 
   setQuery(event: Event): void {
     this.query.set((event.target as HTMLInputElement).value);
+  }
+
+  canFavorite(stand: Stand): boolean {
+    return isHunting(stand);
+  }
+
+  isFavorite(stand: Stand): boolean {
+    return isFavoriteStand(this.state().currentUser, stand.id);
+  }
+
+  toggleFavorite(stand: Stand): void {
+    this.club.toggleFavoriteStand(stand.id);
   }
 
   color(stand: Stand): string {

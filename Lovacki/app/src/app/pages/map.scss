@@ -185,11 +185,11 @@ header p {
 }
 
 .pin.feeding-large {
-  color: #f4b400;
+  color: #f5a31a;
 }
 
 .pin.feeding-small {
-  color: #ef6c00;
+  color: #f5a31a;
 }
 
 .pin.feeding-auto {
@@ -197,15 +197,20 @@ header p {
 }
 
 .pin.feeding-large .mark {
-  width: 30px;
-  height: 30px;
-  margin-left: -15px;
+  width: 32px;
+  height: 42px;
+  margin-left: -16px;
 }
 
 .pin.feeding-small .mark {
-  width: 40px;
-  height: 26px;
-  margin-left: -20px;
+  width: 34px;
+  height: 17px;
+  margin-left: -17px;
+}
+
+.pin.feeding-large .tip,
+.pin.feeding-small .tip {
+  z-index: 1;
 }
 
 .pin.feeding-auto .mark {
@@ -214,15 +219,15 @@ header p {
   margin-left: -16px;
 }
 
-.mark svg {
+.mark svg,
+.mark img {
   width: 100%;
   height: 100%;
   display: block;
   overflow: visible;
 }
 
-.mark svg path,
-.pin.feeding-small .mark svg circle {
+.mark svg path {
   stroke: #fff;
   stroke-width: 1.2;
   paint-order: stroke fill;
@@ -241,15 +246,22 @@ header p {
   white-space: nowrap;
 }
 
-.pin.feeding-large .mark span {
-  top: 50%;
-  font-size: 10px;
+.pin.feeding-large .mark span,
+.pin.feeding-small .mark span {
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -110%);
+  font-size: 11px;
 }
 
-.pin.feeding-small .mark span {
-  top: 52%;
-  left: 42%;
-  font-size: 10px;
+.pin .fav {
+  position: absolute;
+  left: 14px;
+  top: -46px;
+  color: #f5a31a;
+  font-size: 13px;
+  line-height: 1;
+  text-shadow: 0 1px 2px #000;
 }
 
 .pin.highlight .mark::after {
@@ -331,6 +343,17 @@ header p {
 
 .dot.taken {
   background: var(--taken);
+}
+
+.dot.fav {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  color: #f5a31a;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 1;
 }
 
 .dot.feed-large {

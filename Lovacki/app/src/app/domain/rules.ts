@@ -15,6 +15,14 @@ export function isHunting(stand: Stand): boolean {
   return stand.type === 'hunting';
 }
 
+export function isFavoriteStand(user: Member | null | undefined, standId: string): boolean {
+  return user?.favoriteStandIds?.includes(standId) ?? false;
+}
+
+export function toggleFavoriteStandIds(ids: readonly string[], standId: string): string[] {
+  return ids.includes(standId) ? ids.filter((id) => id !== standId) : [...ids, standId];
+}
+
 export function isFeeding(stand: Stand): boolean {
   return stand.type === 'feeding';
 }

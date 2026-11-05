@@ -20,7 +20,7 @@
     }
   </div>
   @if (stands().length === 0) {
-    <p class="empty">{{ s().noSearchResults }}</p>
+    <p class="empty">{{ emptyMessage() }}</p>
   }
   <ul>
     @for (stand of stands(); track stand.id) {
@@ -33,6 +33,18 @@
           </span>
           <b>{{ stand.code }}</b>
         </button>
+        @if (canFavorite(stand)) {
+          <button
+            type="button"
+            class="star"
+            [class.on]="isFavorite(stand)"
+            [attr.aria-pressed]="isFavorite(stand)"
+            [attr.aria-label]="isFavorite(stand) ? s().removeFavorite : s().addFavorite"
+            (click)="toggleFavorite(stand)"
+          >
+            {{ isFavorite(stand) ? '★' : '☆' }}
+          </button>
+        }
       </li>
     }
   </ul>

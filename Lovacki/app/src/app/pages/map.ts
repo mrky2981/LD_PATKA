@@ -13,7 +13,7 @@ import {
 import { ClubFacade } from '../application/club-facade';
 import { InstallService } from '../core/install';
 import { downloadMarkedMap } from '../core/map-export';
-import { PlaceType, Stand, availableCount, hasMapPosition, isAutomaticFeeding, isFeeding, isLargeFeeding, isSmallFeeding, isTaken, mapPinKind, takenCount } from '../core/models';
+import { PlaceType, Stand, availableCount, hasMapPosition, isAutomaticFeeding, isFavoriteStand, isFeeding, isHunting, isLargeFeeding, isSmallFeeding, isTaken, mapPinKind, takenCount } from '../core/models';
 import { LanguageButton } from '../ui/language-button';
 import { AddStandDialog } from '../ui/add-stand-dialog';
 import { StandSheet } from '../ui/stand-sheet';
@@ -28,6 +28,7 @@ interface PinView {
   stand: Stand;
   kind: 'hunting' | 'large' | 'small' | 'automatic';
   taken: boolean;
+  favorite: boolean;
 }
 
 @Component({
@@ -52,6 +53,7 @@ export class MapPage {
   readonly highlightedId = signal<string | null>(null);
   readonly showFree = signal(true);
   readonly showTaken = signal(true);
+  readonly showFavorites = signal(true);
   readonly showFeedLarge = signal(true);
   readonly showFeedSmall = signal(true);
   readonly showFeedAuto = signal(true);
@@ -103,6 +105,13 @@ export class MapPage {
       if (isFeeding(stand)) {
         return this.showFeedLarge();
       }
+      const favorite = isFavoriteStand(state.currentUser, stand.id);
+      if (favorite && !this.showFavorites()) {
+        return false;
+      }
+      if (favorite && !taken) {
+        return true;
+      }
       return taken ? this.showTaken() : this.showFree();
     });
   });
@@ -112,10 +121,15 @@ export class MapPage {
       stand,
       kind: mapPinKind(stand) ?? 'hunting',
       taken: isTaken(state, stand.id),
+      favorite: isHunting(stand) && isFavoriteStand(state.currentUser, stand.id),
     }));
   });
   readonly freeCount = computed(() => availableCount(this.state()));
   readonly taken = computed(() => takenCount(this.state()));
+  readonly favoriteCount = computed(() => {
+    const state = this.state();
+    return state.catalog?.stands.filter((stand) => isHunting(stand) && isFavoriteStand(state.currentUser, stand.id)).length ?? 0;
+  });
   readonly feedingLargeCount = computed(
     () => this.state().catalog?.stands.filter(isLargeFeeding).length ?? 0,
   );
@@ -310,8 +324,8 @@ export class MapPage {
       const pin = views[i];
       const dx = (pt.x - (pin.stand.x ?? 0)) * baseW * zoom;
       const dy = (pt.y - (pin.stand.y ?? 0)) * baseH * zoom;
-      const half = pin.kind === 'small' ? 20 : pin.kind === 'automatic' ? 16 : pin.kind === 'large' ? 15 : 17;
-      const height = pin.kind === 'small' ? 28 : pin.kind === 'automatic' ? 34 : pin.kind === 'large' ? 32 : 46;
+      const half = pin.kind === 'small' ? 17 : pin.kind === 'automatic' ? 16 : pin.kind === 'large' ? 16 : 17;
+      const height = pin.kind === 'small' ? 18 : pin.kind === 'automatic' ? 34 : pin.kind === 'large' ? 42 : 46;
       if (dx >= -half && dx <= half && dy >= -height && dy <= 6) {
         return pin.stand;
       }

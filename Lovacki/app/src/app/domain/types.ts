@@ -97,6 +97,7 @@ export interface Member {
   status: HunterStatus;
   passwordSalt?: string;
   passwordHash?: string;
+  favoriteStandIds?: string[];
 }
 
 export interface Animal {

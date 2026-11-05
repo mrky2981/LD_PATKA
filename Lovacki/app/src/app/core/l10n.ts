@@ -20,6 +20,10 @@ export interface Strings {
   filterAvailable: string;
   filterTaken: string;
   filterFeeding: string;
+  filterFavorites: string;
+  addFavorite: string;
+  removeFavorite: string;
+  favoritesEmpty: string;
   feedingStand: string;
   feedingLarge: string;
   feedingSmall: string;
@@ -45,6 +49,7 @@ export interface Strings {
   legendBody: string;
   legendFree: string;
   legendTaken: string;
+  legendFavorites: string;
   legendFeeding: string;
   legendFeedingLarge: string;
   legendFeedingSmall: string;
@@ -165,6 +170,10 @@ const EN: Strings = {
   filterAvailable: 'Available',
   filterTaken: 'Taken',
   filterFeeding: 'Feeding',
+  filterFavorites: 'Favorites',
+  addFavorite: 'Add to favorites',
+  removeFavorite: 'Remove from favorites',
+  favoritesEmpty: 'No favorite stands yet. Open a stand and mark it.',
   feedingStand: 'Feeding stand',
   feedingLarge: 'Large-game feeder',
   feedingSmall: 'Small-game feeder',
@@ -188,9 +197,10 @@ const EN: Strings = {
   dailyResetBody: 'Hunting stands go back to available every day at 12:00 (Europe/Zagreb). Next reset: %s.',
   legend: 'Legend',
   legendBody:
-    'Green = free stands. Red = taken stands. Gold = large-game feeder. Orange = small-game feeder. Teal hopper = automatic feeder. On the map, tap a legend item to hide or show it.',
+    'Green = free stands. Red = taken stands. A gold star marks a favorite stand. Amber diamond on a stand = large-game feeder. Amber triangle = small-game feeder. Teal hopper = automatic feeder. On the map, tap a legend item to hide or show it.',
   legendFree: 'Free stands',
   legendTaken: 'Taken stands',
+  legendFavorites: 'Favorite stands',
   legendFeeding: 'Feeding stands',
   legendFeedingLarge: 'Large-game feeders',
   legendFeedingSmall: 'Small-game feeders',
@@ -313,6 +323,10 @@ const HR: Strings = {
   filterAvailable: 'Slobodno',
   filterTaken: 'Zauzeto',
   filterFeeding: 'Hranilišta',
+  filterFavorites: 'Omiljene',
+  addFavorite: 'Dodaj u omiljene',
+  removeFavorite: 'Ukloni iz omiljenih',
+  favoritesEmpty: 'Još nema omiljenih čeka. Otvori čeku i označi je zvjezdicom.',
   feedingStand: 'Hranilište',
   feedingLarge: 'Hranilište krupna divljač',
   feedingSmall: 'Hranilište sitna divljač',
@@ -337,9 +351,10 @@ const HR: Strings = {
     'Čeke se svaki dan u 12:00 (Europa/Zagreb) vraćaju na slobodne. Sljedeći reset: %s.',
   legend: 'Legenda',
   legendBody:
-    'Zeleno = slobodne čeke. Crveno = zauzete. Zlatni dijamant = hranilište krupne divljači. Narančasto korito = hranilište sitne divljači. Teal spremnik = automatska hranilica. Na karti dodirni stavku legende da je sakriješ ili pokažeš.',
+    'Zeleno = slobodne čeke. Crveno = zauzete. Zlatna zvjezdica = omiljena čeka. Narančasti romb na stalku = hranilište krupne divljači. Narančasti trokut = hranilište sitne divljači. Tirkizni spremnik = automatska hranilica. Na karti dodirni stavku legende da je sakriješ ili pokažeš.',
   legendFree: 'Slobodne čeke',
   legendTaken: 'Zauzete čeke',
+  legendFavorites: 'Omiljene čeke',
   legendFeeding: 'Hranilišta',
   legendFeedingLarge: 'Hranilišta krupna divljač',
   legendFeedingSmall: 'Hranilišta sitna divljač',

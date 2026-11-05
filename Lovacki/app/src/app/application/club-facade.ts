@@ -31,6 +31,7 @@ import {
   ownHuntingStandIds,
   sameHunter,
   todaysDuckSignups,
+  toggleFavoriteStandIds,
 } from '../domain';
 import { AUTH_SESSION, CLUB_REPOSITORY } from './tokens';
 import { environment } from '../../environments/environment';
@@ -404,6 +405,24 @@ export class ClubFacade {
     }));
   }
 
+  toggleFavoriteStand(standId: string): void {
+    const current = this.store();
+    const user = current.currentUser;
+    const stand = current.catalog?.stands.find((item) => item.id === standId);
+    if (!user || !stand || !isHunting(stand)) {
+      return;
+    }
+    const updated: Member = {
+      ...user,
+      favoriteStandIds: toggleFavoriteStandIds(user.favoriteStandIds ?? [], standId),
+    };
+    this.commit((state) => ({
+      ...state,
+      currentUser: updated,
+      users: state.users.map((item) => (item.id === user.id ? updated : item)),
+    }));
+  }
+
   deleteStand(standId: string): void {
     if (!this.isAdmin()) {
       return;
@@ -622,6 +641,7 @@ export class ClubFacade {
         displayName: user.displayName || memberDisplayName(firstName, lastName),
         licenseNumber: user.licenseNumber ?? '',
         status: user.status ?? 'MEMBER',
+        favoriteStandIds: user.favoriteStandIds ?? [],
       };
     });
   }

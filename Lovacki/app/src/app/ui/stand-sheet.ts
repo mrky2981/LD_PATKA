@@ -8,6 +8,7 @@ import {
   hasMapPosition,
   isFeeding,
   isHunting,
+  isFavoriteStand,
   isTakenByMe,
   isTouristOccupancy,
   occupancyFor,
@@ -62,6 +63,8 @@ export class StandSheet {
     return this.occ() ? 'taken' : 'free';
   });
   readonly canTake = computed(() => isHunting(this.stand()) && !this.occ());
+  readonly canFavorite = computed(() => isHunting(this.stand()));
+  readonly favorite = computed(() => isFavoriteStand(this.state().currentUser, this.stand().id));
   readonly canLeave = computed(() => this.mine());
   readonly canLeaveTourist = computed(
     () => Boolean(this.occ()) && !this.mine() && canRelease(this.state(), this.stand().id),
