@@ -9,11 +9,12 @@ import {
   inject,
   signal,
   viewChild,
+  WritableSignal,
 } from '@angular/core';
 import { ClubFacade } from '../application/club-facade';
 import { InstallService } from '../core/install';
 import { downloadMarkedMap } from '../core/map-export';
-import { PlaceType, Stand, availableCount, hasMapPosition, isAutomaticFeeding, isFavoriteStand, isFeeding, isHunting, isLargeFeeding, isSmallFeeding, isTaken, mapPinKind, takenCount } from '../core/models';
+import { PlaceType, Stand, availableCount, hasMapPosition, huntingStands, isAutomaticFeeding, isFavoriteStand, isFeeding, isHunting, isLargeFeeding, isSmallFeeding, isTaken, mapPinKind, takenCount } from '../core/models';
 import { LanguageButton } from '../ui/language-button';
 import { AddStandDialog } from '../ui/add-stand-dialog';
 import { StandSheet } from '../ui/stand-sheet';
@@ -105,12 +106,8 @@ export class MapPage {
       if (isFeeding(stand)) {
         return this.showFeedLarge();
       }
-      const favorite = isFavoriteStand(state.currentUser, stand.id);
-      if (favorite && !this.showFavorites()) {
-        return false;
-      }
-      if (favorite && !taken) {
-        return true;
+      if (isFavoriteStand(state.currentUser, stand.id)) {
+        return this.showFavorites();
       }
       return taken ? this.showTaken() : this.showFree();
     });
@@ -126,9 +123,22 @@ export class MapPage {
   });
   readonly freeCount = computed(() => availableCount(this.state()));
   readonly taken = computed(() => takenCount(this.state()));
-  readonly favoriteCount = computed(() => {
-    const state = this.state();
-    return state.catalog?.stands.filter((stand) => isHunting(stand) && isFavoriteStand(state.currentUser, stand.id)).length ?? 0;
+  readonly favoriteCount = computed(
+    () => huntingStands(this.state()).filter((stand) => isFavoriteStand(this.state().currentUser, stand.id)).length,
+  );
+  readonly legendItems = computed(() => {
+    const s = this.s();
+    const rows = [
+      this.legendRow('free', s.legendFree, this.freeCount(), this.showFree),
+      this.legendRow('taken', s.legendTaken, this.taken(), this.showTaken),
+      this.legendRow('fav', s.legendFavorites, this.favoriteCount(), this.showFavorites),
+      this.legendRow('feed-large', s.legendFeedingLarge, this.feedingLargeCount(), this.showFeedLarge),
+      this.legendRow('feed-small', s.legendFeedingSmall, this.feedingSmallCount(), this.showFeedSmall),
+    ];
+    if (this.feedingAutoCount() > 0) {
+      rows.push(this.legendRow('feed-auto', s.legendFeedingAutomatic, this.feedingAutoCount(), this.showFeedAuto));
+    }
+    return rows;
   });
   readonly feedingLargeCount = computed(
     () => this.state().catalog?.stands.filter(isLargeFeeding).length ?? 0,
@@ -266,6 +276,10 @@ export class MapPage {
   showStandOnMap(stand: Stand): void {
     this.selected.set(null);
     this.focus(stand);
+  }
+
+  private legendRow(mark: string, label: string, count: number, shown: WritableSignal<boolean>) {
+    return { mark, label, count, on: shown(), toggle: () => shown.update((value) => !value) };
   }
 
   saveStand(code: string): void {

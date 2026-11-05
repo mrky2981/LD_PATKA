@@ -79,12 +79,10 @@ export class StandsPage {
             standDisplayName(this.s(), stand.code, stand.type, stand.feedingKind).toLowerCase().includes(q),
         )
       : byFilter;
-    const favorites = matched.filter((stand) => isFavoriteStand(state.currentUser, stand.id));
-    if (filter === 'favorites' || favorites.length === 0) {
-      return matched;
-    }
-    const rest = matched.filter((stand) => !isFavoriteStand(state.currentUser, stand.id));
-    return [...favorites, ...rest];
+    const isFavorite = (stand: Stand) => isFavoriteStand(state.currentUser, stand.id);
+    return filter === 'favorites'
+      ? matched
+      : [...matched.filter(isFavorite), ...matched.filter((stand) => !isFavorite(stand))];
   });
 
   readonly emptyMessage = computed(() => {

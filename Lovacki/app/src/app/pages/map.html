@@ -97,52 +97,17 @@
       <button class="legend-toggle" type="button" (click)="legendOpen.set(!legendOpen())">
         <span>{{ s().legend }}</span>
         @if (!legendOpen()) {
-          <i class="dot free" [class.off]="!showFree()"></i>
-          <i class="dot taken" [class.off]="!showTaken()"></i>
-          <i class="dot fav" [class.off]="!showFavorites()">★</i>
-          <i class="dot feed-large" [class.off]="!showFeedLarge()"></i>
-          <i class="dot feed-small" [class.off]="!showFeedSmall()"></i>
-          @if (feedingAutoCount() > 0) {
-            <i class="dot feed-auto" [class.off]="!showFeedAuto()"></i>
+          @for (item of legendItems(); track item.mark) {
+            <i class="dot" [class]="'dot ' + item.mark" [class.off]="!item.on">{{ item.mark === 'fav' ? '★' : '' }}</i>
           }
         }
       </button>
       @if (legendOpen()) {
         <p>{{ s().legendTapHint }}</p>
-        <button type="button" class="legend-row" [class.off]="!showFree()" (click)="showFree.set(!showFree())">
-          <span>{{ s().legendFree }} · {{ freeCount() }}</span>
-          @if (!showFree()) {
-            <small>{{ s().legendHidden }}</small>
-          }
-        </button>
-        <button type="button" class="legend-row" [class.off]="!showTaken()" (click)="showTaken.set(!showTaken())">
-          <span>{{ s().legendTaken }} · {{ taken() }}</span>
-          @if (!showTaken()) {
-            <small>{{ s().legendHidden }}</small>
-          }
-        </button>
-        <button type="button" class="legend-row" [class.off]="!showFavorites()" (click)="showFavorites.set(!showFavorites())">
-          <span>{{ s().legendFavorites }} · {{ favoriteCount() }}</span>
-          @if (!showFavorites()) {
-            <small>{{ s().legendHidden }}</small>
-          }
-        </button>
-        <button type="button" class="legend-row" [class.off]="!showFeedLarge()" (click)="showFeedLarge.set(!showFeedLarge())">
-          <span>{{ s().legendFeedingLarge }} · {{ feedingLargeCount() }}</span>
-          @if (!showFeedLarge()) {
-            <small>{{ s().legendHidden }}</small>
-          }
-        </button>
-        <button type="button" class="legend-row" [class.off]="!showFeedSmall()" (click)="showFeedSmall.set(!showFeedSmall())">
-          <span>{{ s().legendFeedingSmall }} · {{ feedingSmallCount() }}</span>
-          @if (!showFeedSmall()) {
-            <small>{{ s().legendHidden }}</small>
-          }
-        </button>
-        @if (feedingAutoCount() > 0) {
-          <button type="button" class="legend-row" [class.off]="!showFeedAuto()" (click)="showFeedAuto.set(!showFeedAuto())">
-            <span>{{ s().legendFeedingAutomatic }} · {{ feedingAutoCount() }}</span>
-            @if (!showFeedAuto()) {
+        @for (item of legendItems(); track item.mark) {
+          <button type="button" class="legend-row" [class.off]="!item.on" (click)="item.toggle()">
+            <span>{{ item.label }} · {{ item.count }}</span>
+            @if (!item.on) {
               <small>{{ s().legendHidden }}</small>
             }
           </button>
