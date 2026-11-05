@@ -74,7 +74,7 @@ export class ClubFacade {
         hunterName: current?.displayName ?? '',
         catalog: mergeCatalog(this.baseCatalog, custom, removed),
         occupancies: occupanciesByStand(saved.occupancies ?? [], currentHuntingDay()),
-        sightings: [...(saved.sightings ?? [])].sort((a, b) => b.atEpochMs - a.atEpochMs),
+        sightings: newest(saved.sightings ?? []),
         huntingDay: currentHuntingDay(),
         nextResetLabel: nextResetLabel(),
         language: saved.language === 'hr' ? 'hr' : 'en',
@@ -82,8 +82,8 @@ export class ClubFacade {
         users,
         customStands: custom,
         removedStandIds: removed,
-        claimEvents: [...(saved.claimEvents ?? [])].sort((a, b) => b.atEpochMs - a.atEpochMs),
-        duckSignups: [...(saved.duckSignups ?? [])].sort((a, b) => b.atEpochMs - a.atEpochMs),
+        claimEvents: newest(saved.claimEvents ?? []),
+        duckSignups: newest(saved.duckSignups ?? []),
         authError: null,
         splashDone: false,
       });
@@ -105,20 +105,13 @@ export class ClubFacade {
 
   setLanguage(lang: AppLang): void {
     document.documentElement.lang = lang;
-    this.store.update((state) => ({ ...state, language: lang, authError: null }));
-    void this.persist();
+    this.commit((state) => ({ ...state, language: lang, authError: null }));
   }
 
   async login(licenseNumber: string, password: string): Promise<boolean> {
     try {
       const user = await this.auth.login(licenseNumber, password, this.store().users);
-      this.store.update((current) => ({
-        ...current,
-        currentUser: user,
-        hunterName: user.displayName,
-        users: [...current.users.filter((item) => item.id !== user.id), user],
-        authError: null,
-      }));
+      this.adopt(user);
       await this.persist();
       this.attachWatch();
       return true;
@@ -169,13 +162,7 @@ export class ClubFacade {
         role: wantsAdmin ? 'ADMIN' : 'MEMBER',
         members: this.store().users,
       });
-      this.store.update((state) => ({
-        ...state,
-        users: [...state.users.filter((item) => item.id !== user.id), user],
-        currentUser: user,
-        hunterName: user.displayName,
-        authError: null,
-      }));
+      this.adopt(user);
       await this.persist();
       this.attachWatch();
       return true;
@@ -252,14 +239,7 @@ export class ClubFacade {
       hunterUserId: user.id,
     };
     this.pendingOccupancyUpserts.push(next[standId]);
-    this.pendingClaimUpserts.push(event);
-    this.store.update((state) => ({
-      ...state,
-      occupancies: next,
-      huntingDay: day,
-      claimEvents: [event, ...state.claimEvents],
-    }));
-    void this.persist();
+    this.publish(next, event, day);
   }
 
   takeStandForTourist(standId: string): void {
@@ -297,14 +277,7 @@ export class ClubFacade {
       bookedByName: user.displayName,
     };
     this.pendingOccupancyUpserts.push(occupancy);
-    this.pendingClaimUpserts.push(event);
-    this.store.update((state) => ({
-      ...state,
-      occupancies: { ...state.occupancies, [standId]: occupancy },
-      huntingDay: day,
-      claimEvents: [event, ...state.claimEvents],
-    }));
-    void this.persist();
+    this.publish({ ...current.occupancies, [standId]: occupancy }, event, day);
   }
 
   setHunterStatus(userId: string, status: HunterStatus): void {
@@ -315,13 +288,12 @@ export class ClubFacade {
       account.id === userId ? { ...account, status } : account,
     );
     const current = users.find((account) => account.id === this.store().currentUser?.id) ?? null;
-    this.store.update((state) => ({
+    this.commit((state) => ({
       ...state,
       users,
       currentUser: current,
       hunterName: current?.displayName ?? state.hunterName,
     }));
-    void this.persist();
   }
 
   leaveStand(standId: string): void {
@@ -356,15 +328,9 @@ export class ClubFacade {
       atEpochMs: now,
     };
     this.pendingOccupancyDeletes.push(occupancyKey(occ));
-    this.pendingClaimUpserts.push(event);
     const next = { ...current.occupancies };
     delete next[standId];
-    this.store.update((state) => ({
-      ...state,
-      occupancies: next,
-      claimEvents: [event, ...state.claimEvents],
-    }));
-    void this.persist();
+    this.publish(next, event);
   }
 
   addSighting(standId: string, animal: Animal, count: number, note: string): void {
@@ -384,8 +350,7 @@ export class ClubFacade {
       hunterUserId: user.id,
     };
     this.pendingSightingUpserts.push(sighting);
-    this.store.update((state) => ({ ...state, sightings: [sighting, ...state.sightings] }));
-    void this.persist();
+    this.commit((state) => ({ ...state, sightings: [sighting, ...state.sightings] }));
   }
 
   deleteSighting(id: string): void {
@@ -393,7 +358,8 @@ export class ClubFacade {
     if (!user) {
       return;
     }
-    this.store.update((state) => ({
+    this.pendingSightingDeletes.push(id);
+    this.commit((state) => ({
       ...state,
       sightings: state.sightings.filter(
         (sighting) =>
@@ -403,8 +369,6 @@ export class ClubFacade {
           ),
       ),
     }));
-    this.pendingSightingDeletes.push(id);
-    void this.persist();
   }
 
   addStand(type: PlaceType, code: string, x?: number, y?: number): void {
@@ -418,14 +382,8 @@ export class ClubFacade {
     const s = this.strings();
     const feedingKind = feedingKindFromPlace(type);
     const feeding = feedingKind !== null;
-    const kind =
-      feedingKind === 'small'
-        ? s.feedingSmall
-        : feedingKind === 'automatic'
-          ? s.feedingAutomatic
-          : feedingKind === 'large'
-            ? s.feedingLarge
-            : s.huntingStand;
+    const names = { small: s.feedingSmall, large: s.feedingLarge, automatic: s.feedingAutomatic };
+    const kind = feedingKind ? names[feedingKind] : s.huntingStand;
     const stand: Stand = {
       id: `custom-${newId()}`,
       code: clean,
@@ -439,12 +397,11 @@ export class ClubFacade {
       stand.y = clamp(y, 0.02, 0.98);
     }
     const custom = [...this.store().customStands, stand];
-    this.store.update((state) => ({
+    this.commit((state) => ({
       ...state,
       customStands: custom,
       catalog: mergeCatalog(this.baseCatalog, custom, state.removedStandIds),
     }));
-    void this.persist();
   }
 
   deleteStand(standId: string): void {
@@ -459,14 +416,13 @@ export class ClubFacade {
       this.pendingOccupancyDeletes.push(occupancyKey(occ));
     }
     delete occupancies[standId];
-    this.store.update((state) => ({
+    this.commit((state) => ({
       ...state,
       customStands: custom,
       removedStandIds: removed,
       catalog: mergeCatalog(this.baseCatalog, custom, removed),
       occupancies,
     }));
-    void this.persist();
   }
 
   joinDuckHunt(): void {
@@ -477,23 +433,19 @@ export class ClubFacade {
     }
     const now = Date.now();
     const day = currentHuntingDay();
-    const signup: DuckSignup = {
-      id: newId(),
-      hunterUserId: user.id,
-      hunterName: user.displayName,
-      huntingDay: day,
-      atEpochMs: now,
-    };
-    const event = this.duckEvent('duck', user, day, now);
-    this.pendingDuckUpserts.push(signup);
-    this.pendingClaimUpserts.push(event);
-    this.store.update((state) => ({
-      ...state,
-      duckSignups: [signup, ...state.duckSignups],
-      huntingDay: day,
-      claimEvents: [event, ...state.claimEvents],
-    }));
-    void this.persist();
+    this.addDuck(
+      {
+        id: newId(),
+        hunterUserId: user.id,
+        hunterName: user.displayName,
+        huntingDay: day,
+        atEpochMs: now,
+      },
+      'duck',
+      user,
+      day,
+      now,
+    );
   }
 
   leaveDuckHunt(): void {
@@ -513,12 +465,11 @@ export class ClubFacade {
     const day = currentHuntingDay();
     const event = this.duckEvent('duck-leave', user, day, now);
     this.pendingClaimUpserts.push(event);
-    this.store.update((state) => ({
+    this.commit((state) => ({
       ...state,
       duckSignups: state.duckSignups.filter((signup) => signup.id !== mine.id),
       claimEvents: [event, ...state.claimEvents],
     }));
-    void this.persist();
   }
 
   addDuckTourist(): void {
@@ -529,34 +480,29 @@ export class ClubFacade {
     }
     const now = Date.now();
     const day = currentHuntingDay();
-    const signup: DuckSignup = {
-      id: newId(),
-      hunterName: this.strings().takeForTourist,
-      huntingDay: day,
-      atEpochMs: now,
-      forTourist: true,
-      bookedByUserId: user.id,
-      bookedByName: user.displayName,
-    };
-    const event = this.duckEvent('duck-tourist', user, day, now);
-    this.pendingDuckUpserts.push(signup);
-    this.pendingClaimUpserts.push(event);
-    this.store.update((state) => ({
-      ...state,
-      duckSignups: [signup, ...state.duckSignups],
-      huntingDay: day,
-      claimEvents: [event, ...state.claimEvents],
-    }));
-    void this.persist();
+    this.addDuck(
+      {
+        id: newId(),
+        hunterName: this.strings().takeForTourist,
+        huntingDay: day,
+        atEpochMs: now,
+        forTourist: true,
+        bookedByUserId: user.id,
+        bookedByName: user.displayName,
+      },
+      'duck-tourist',
+      user,
+      day,
+      now,
+    );
   }
 
   removeDuckSignup(id: string): void {
     this.pendingDuckDeletes.push(id);
-    this.store.update((state) => ({
+    this.commit((state) => ({
       ...state,
       duckSignups: state.duckSignups.filter((signup) => signup.id !== id),
     }));
-    void this.persist();
   }
 
   refreshHuntingDay(): void {
@@ -564,6 +510,47 @@ export class ClubFacade {
       ...state,
       huntingDay: currentHuntingDay(),
       nextResetLabel: nextResetLabel(),
+    }));
+  }
+
+  private adopt(user: Member): void {
+    this.store.update((state) => ({
+      ...state,
+      users: [...state.users.filter((item) => item.id !== user.id), user],
+      currentUser: user,
+      hunterName: user.displayName,
+      authError: null,
+    }));
+  }
+
+  private commit(update: (state: ClubState) => ClubState): void {
+    this.store.update(update);
+    void this.persist();
+  }
+
+  private publish(
+    occupancies: ClubState['occupancies'],
+    event: ClaimEvent,
+    huntingDay?: string,
+  ): void {
+    this.pendingClaimUpserts.push(event);
+    this.commit((state) => ({
+      ...state,
+      occupancies,
+      claimEvents: [event, ...state.claimEvents],
+      ...(huntingDay ? { huntingDay } : {}),
+    }));
+  }
+
+  private addDuck(signup: DuckSignup, type: string, user: Member, day: string, now: number): void {
+    const event = this.duckEvent(type, user, day, now);
+    this.pendingDuckUpserts.push(signup);
+    this.pendingClaimUpserts.push(event);
+    this.commit((state) => ({
+      ...state,
+      duckSignups: [signup, ...state.duckSignups],
+      huntingDay: day,
+      claimEvents: [event, ...state.claimEvents],
     }));
   }
 
@@ -611,15 +598,9 @@ export class ClubFacade {
             occupancies: live.occupancies
               ? occupanciesByStand(live.occupancies, state.huntingDay)
               : state.occupancies,
-            sightings: live.sightings
-              ? [...live.sightings].sort((a, b) => b.atEpochMs - a.atEpochMs)
-              : state.sightings,
-            claimEvents: live.claimEvents
-              ? [...live.claimEvents].sort((a, b) => b.atEpochMs - a.atEpochMs)
-              : state.claimEvents,
-            duckSignups: live.duckSignups
-              ? [...live.duckSignups].sort((a, b) => b.atEpochMs - a.atEpochMs)
-              : state.duckSignups,
+            sightings: live.sightings ? newest(live.sightings) : state.sightings,
+            claimEvents: live.claimEvents ? newest(live.claimEvents) : state.claimEvents,
+            duckSignups: live.duckSignups ? newest(live.duckSignups) : state.duckSignups,
           };
         });
       }) ?? null;
@@ -668,6 +649,10 @@ export class ClubFacade {
     };
     await this.repository.saveSnapshot(payload);
   }
+}
+
+function newest<T extends { atEpochMs: number }>(items: readonly T[]): T[] {
+  return [...items].sort((a, b) => b.atEpochMs - a.atEpochMs);
 }
 
 function occupanciesByStand(occupancies: Occupancy[], huntingDay: string): Record<string, Occupancy> {

@@ -11,16 +11,16 @@
   }
 
   @if (canTake()) {
-    <button class="available" type="button" (click)="take()">{{ s().takeStand }}</button>
+    <button class="available" type="button" (click)="club.takeStand(stand().id)">{{ s().takeStand }}</button>
   }
   @if (canTourist()) {
-    <button class="gold" type="button" (click)="tourist()">{{ s().takeForTourist }}</button>
+    <button class="gold" type="button" (click)="club.takeStandForTourist(stand().id)">{{ s().takeForTourist }}</button>
   }
   @if (canLeave()) {
-    <button class="outline" type="button" (click)="leave()">{{ s().leaveStand }}</button>
+    <button class="outline" type="button" (click)="club.leaveStand(stand().id)">{{ s().leaveStand }}</button>
   }
   @if (canLeaveTourist()) {
-    <button class="outline" type="button" (click)="leave()">{{ s().leaveTouristStand }}</button>
+    <button class="outline" type="button" (click)="club.leaveStand(stand().id)">{{ s().leaveTouristStand }}</button>
   }
 
   <h3>{{ s().logSighting }}</h3>
@@ -49,6 +49,6 @@
     {{ logged() ? s().savedAddAnother : s().saveSighting }}
   </button>
   @if (club.isAdmin()) {
-    <button class="danger" type="button" (click)="removeStand()">{{ s().deleteStand }}</button>
+    <button class="danger" type="button" (click)="club.deleteStand(stand().id); closed.emit()">{{ s().deleteStand }}</button>
   }
 </section>

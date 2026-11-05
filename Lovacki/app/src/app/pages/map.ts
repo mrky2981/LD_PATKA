@@ -100,9 +100,6 @@ export class MapPage {
       if (isSmallFeeding(stand)) {
         return this.showFeedSmall();
       }
-      if (isLargeFeeding(stand)) {
-        return this.showFeedLarge();
-      }
       if (isFeeding(stand)) {
         return this.showFeedLarge();
       }

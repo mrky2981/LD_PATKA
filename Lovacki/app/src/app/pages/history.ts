@@ -54,27 +54,17 @@ export class HistoryPage {
     toStandCode: string;
   }): string {
     const s = this.s();
-    if (event.type === 'duck') {
-      return format(s.historyDuck, event.hunterName);
-    }
-    if (event.type === 'duck-leave') {
-      return format(s.historyDuckLeave, event.hunterName);
-    }
-    if (event.type === 'duck-tourist') {
-      return format(s.historyDuckTourist, event.hunterName);
-    }
-    if (event.type === 'tourist') {
-      return format(s.historyTourist, event.hunterName, event.toStandCode);
-    }
-    if (event.type === 'leave') {
-      return format(s.historyLeave, event.hunterName, event.toStandCode);
-    }
-    if (event.type === 'tourist-leave') {
-      return format(s.historyTouristLeave, event.hunterName, event.toStandCode);
-    }
-    if (event.type === 'change') {
-      return format(s.historyChange, event.hunterName, event.fromStandCode ?? '', event.toStandCode);
-    }
-    return format(s.historyClaim, event.hunterName, event.toStandCode);
+    const name = event.hunterName;
+    const code = event.toStandCode;
+    const text: Record<string, string> = {
+      duck: format(s.historyDuck, name),
+      'duck-leave': format(s.historyDuckLeave, name),
+      'duck-tourist': format(s.historyDuckTourist, name),
+      tourist: format(s.historyTourist, name, code),
+      leave: format(s.historyLeave, name, code),
+      'tourist-leave': format(s.historyTouristLeave, name, code),
+      change: format(s.historyChange, name, event.fromStandCode ?? '', code),
+    };
+    return text[event.type] ?? format(s.historyClaim, name, code);
   }
 }

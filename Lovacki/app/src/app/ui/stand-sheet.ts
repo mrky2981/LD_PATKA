@@ -83,21 +83,4 @@ export class StandSheet {
     this.note.set('');
     this.count.set(1);
   }
-
-  take(): void {
-    this.club.takeStand(this.stand().id);
-  }
-
-  leave(): void {
-    this.club.leaveStand(this.stand().id);
-  }
-
-  tourist(): void {
-    this.club.takeStandForTourist(this.stand().id);
-  }
-
-  removeStand(): void {
-    this.club.deleteStand(this.stand().id);
-    this.closed.emit();
-  }
 }

@@ -99,9 +99,6 @@ export interface Member {
   passwordHash?: string;
 }
 
-/** @deprecated Use Member. Kept during local snapshot migration. */
-export type UserAccount = Member;
-
 export interface Animal {
   id: string;
   label: string;

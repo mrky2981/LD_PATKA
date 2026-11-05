@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import {
+  WriteBatch,
   collection,
   doc,
   getDoc,
@@ -110,53 +111,26 @@ export class FirebaseClubRepository implements ClubRepository {
       delete safe.passwordSalt;
       batch.set(doc(this.db, `${CLUB_ROOT}/members/${user.id}`), stripUndefined(safe));
     }
-    for (const occ of snapshot.upsertOccupancies ?? []) {
-      batch.set(
-        doc(this.db, `${CLUB_ROOT}/occupancies/${occ.huntingDay}_${occ.standId}`),
-        stripUndefined(occ),
-      );
-    }
-    for (const key of snapshot.deletedOccupancyKeys ?? []) {
-      batch.delete(doc(this.db, `${CLUB_ROOT}/occupancies/${key}`));
-    }
-    for (const sighting of snapshot.upsertSightings ?? []) {
-      batch.set(doc(this.db, `${CLUB_ROOT}/sightings/${sighting.id}`), stripUndefined(sighting));
-    }
-    for (const id of snapshot.deletedSightingIds ?? []) {
-      batch.delete(doc(this.db, `${CLUB_ROOT}/sightings/${id}`));
-    }
-    for (const event of snapshot.upsertClaimEvents ?? []) {
-      batch.set(doc(this.db, `${CLUB_ROOT}/claimEvents/${event.id}`), stripUndefined(event));
-    }
-    for (const signup of snapshot.upsertDuckSignups ?? []) {
-      batch.set(doc(this.db, `${CLUB_ROOT}/duckSignups/${signup.id}`), stripUndefined(signup));
-    }
-    for (const id of snapshot.deletedDuckSignupIds ?? []) {
-      batch.delete(doc(this.db, `${CLUB_ROOT}/duckSignups/${id}`));
-    }
+    let ops = snapshot.users?.length ?? 0;
+    ops += this.upsert(batch, 'occupancies', snapshot.upsertOccupancies, (occ) =>
+      `${occ.huntingDay}_${occ.standId}`,
+    );
+    ops += this.remove(batch, 'occupancies', snapshot.deletedOccupancyKeys);
+    ops += this.upsert(batch, 'sightings', snapshot.upsertSightings, (item) => item.id);
+    ops += this.remove(batch, 'sightings', snapshot.deletedSightingIds);
+    ops += this.upsert(batch, 'claimEvents', snapshot.upsertClaimEvents, (item) => item.id);
+    ops += this.upsert(batch, 'duckSignups', snapshot.upsertDuckSignups, (item) => item.id);
+    ops += this.remove(batch, 'duckSignups', snapshot.deletedDuckSignupIds);
     if (admin) {
-      for (const stand of snapshot.customStands ?? []) {
-        batch.set(doc(this.db, `${CLUB_ROOT}/stands/${stand.id}`), stripUndefined(stand));
-      }
-      for (const id of snapshot.removedStandIds ?? []) {
-        batch.delete(doc(this.db, `${CLUB_ROOT}/stands/${id}`));
-      }
+      ops += this.upsert(batch, 'stands', snapshot.customStands, (stand) => stand.id);
+      ops += this.remove(batch, 'stands', snapshot.removedStandIds);
       batch.set(
         doc(this.db, CLUB_ROOT),
         stripUndefined({ removedStandIds: snapshot.removedStandIds ?? [] }),
         { merge: true },
       );
+      ops += 1;
     }
-    const ops =
-      (snapshot.users?.length ?? 0) +
-      (snapshot.upsertOccupancies?.length ?? 0) +
-      (snapshot.deletedOccupancyKeys?.length ?? 0) +
-      (snapshot.upsertSightings?.length ?? 0) +
-      (snapshot.deletedSightingIds?.length ?? 0) +
-      (snapshot.upsertClaimEvents?.length ?? 0) +
-      (snapshot.upsertDuckSignups?.length ?? 0) +
-      (snapshot.deletedDuckSignupIds?.length ?? 0) +
-      (admin ? (snapshot.customStands?.length ?? 0) + (snapshot.removedStandIds?.length ?? 0) + 1 : 0);
     if (ops === 0) {
       return;
     }
@@ -178,32 +152,44 @@ export class FirebaseClubRepository implements ClubRepository {
       return () => undefined;
     }
     const unsubs = [
-      onSnapshot(collection(this.db, `${CLUB_ROOT}/occupancies`), (snap) => {
-        onChange({ occupancies: snap.docs.map((item) => item.data() as Occupancy) });
-      }),
-      onSnapshot(collection(this.db, `${CLUB_ROOT}/sightings`), (snap) => {
-        onChange({ sightings: snap.docs.map((item) => item.data() as Sighting) });
-      }),
-      onSnapshot(collection(this.db, `${CLUB_ROOT}/claimEvents`), (snap) => {
-        onChange({ claimEvents: snap.docs.map((item) => item.data() as ClaimEvent) });
-      }),
-      onSnapshot(collection(this.db, `${CLUB_ROOT}/duckSignups`), (snap) => {
-        onChange({ duckSignups: snap.docs.map((item) => item.data() as DuckSignup) });
-      }),
-      onSnapshot(collection(this.db, `${CLUB_ROOT}/members`), (snap) => {
-        onChange({ users: snap.docs.map((item) => item.data() as Member) });
-      }),
-      onSnapshot(collection(this.db, `${CLUB_ROOT}/stands`), (snap) => {
-        onChange({
-          allStands: snap.docs.map((item) => item.data() as Stand),
-        });
-      }),
+      this.listen<Occupancy>('occupancies', (occupancies) => onChange({ occupancies })),
+      this.listen<Sighting>('sightings', (sightings) => onChange({ sightings })),
+      this.listen<ClaimEvent>('claimEvents', (claimEvents) => onChange({ claimEvents })),
+      this.listen<DuckSignup>('duckSignups', (duckSignups) => onChange({ duckSignups })),
+      this.listen<Member>('members', (users) => onChange({ users })),
+      this.listen<Stand>('stands', (allStands) => onChange({ allStands })),
       onSnapshot(doc(this.db, CLUB_ROOT), (snap) => {
-        const removedStandIds = (snap.data()?.['removedStandIds'] as string[] | undefined) ?? [];
-        onChange({ removedStandIds });
+        onChange({
+          removedStandIds: (snap.data()?.['removedStandIds'] as string[] | undefined) ?? [],
+        });
       }),
     ];
     return () => unsubs.forEach((stop) => stop());
+  }
+
+  private upsert<T extends object>(
+    batch: WriteBatch,
+    name: string,
+    items: readonly T[] | undefined,
+    idOf: (item: T) => string,
+  ): number {
+    for (const item of items ?? []) {
+      batch.set(doc(this.db, `${CLUB_ROOT}/${name}/${idOf(item)}`), stripUndefined(item));
+    }
+    return items?.length ?? 0;
+  }
+
+  private remove(batch: WriteBatch, name: string, ids: readonly string[] | undefined): number {
+    for (const id of ids ?? []) {
+      batch.delete(doc(this.db, `${CLUB_ROOT}/${name}/${id}`));
+    }
+    return ids?.length ?? 0;
+  }
+
+  private listen<T>(name: string, onRows: (rows: T[]) => void): Unsubscribe {
+    return onSnapshot(collection(this.db, `${CLUB_ROOT}/${name}`), (snap) => {
+      onRows(snap.docs.map((item) => item.data() as T));
+    });
   }
 
   private async col<T>(name: string): Promise<T[]> {
